@@ -1,38 +1,42 @@
 ﻿# NOTES — TP Ahorcado
 
-## Historia de Usuario que estamos atacando primero
+## Historia de usuario que estamos atacando primero
 
-### US-07 — Ingresar una letra
+### US-01 — Iniciar partida nueva
 
 **Como** jugador
-**Quiero** ingresar una letra
-**Para** intentar descubrir la palabra
+**Quiero** iniciar una partida nueva
+**Para** empezar a jugar al ahorcado
 
-### Por que elegimos esta historia
+### Por que arrancamos con esta historia
 
-US-07 es el nucleo del juego. Sin ella, el Ahorcado no puede existir: es la accion
-principal que el jugador realiza. Ademas, sus criterios de aceptacion obligan a disenar
-y testear con TDD el objeto Ahorcado desde el principio (la logica de adivinar letras),
-construyendo una base solida para todo lo que viene despues.
+Al principio ibamos a arrancar con US-07 (ingresar una letra), pero nos dimos cuenta de
+que no tiene sentido pensar en adivinar letras si todavia no hay una partida en curso con
+una palabra a descubrir. US-01 es el punto de entrada de todo: sin ella no existe el juego.
+
+Ademas, el Story Map lo deja claro: el backbone del jugador empieza en "Iniciar Partida"
+(epic 1) y desde ahi baja al resto. Siguiendo ese orden natural, US-01 va primero.
+
+En los tests, la palabra se inyecta por la URL (?word=GATO) para que sea siempre la
+misma y el resultado sea predecible.
 
 ### Criterios de aceptacion (lo que define que la historia esta terminada)
 
-- CA-1: Solo se acepta una letra por vez.
-- CA-2: Si la letra esta en la palabra, se revela en todas sus posiciones.
-- CA-3: Si la letra no esta en la palabra, se registra como error.
-- CA-4: No se puede repetir una letra ya ingresada en esa partida.
+- CA-1: Al entrar a la app, veo un boton para iniciar partida.
+- CA-2: Al tocarlo, el juego selecciona una palabra y arranca la partida.
+- CA-3: No puedo empezar a adivinar letras antes de iniciar la partida.
+- CA-4: Cada partida nueva usa una palabra distinta a la anterior (si el mazzo lo permite).
 
 ---
 
 ## Trazabilidad: Historia -> AT -> Unit Tests
 
-### US-07
+### US-01
 
 | Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado |
 |---|---|---|
-| CA-2: letra presente se revela | El jugador acierta una letra | revela todas las ocurrencias de la letra acertada; es case-insensitive |
-| CA-3: letra ausente cuenta como error | El jugador falla una letra | letra ausente descuenta una vida; la palabra no cambia |
-| CA-4: no se puede repetir letra | El jugador repite una letra | no penaliza si la letra ya fue intentada; informa que ya fue usada |
+| CA-1 y CA-2: al iniciar, arranca la partida con una palabra | Iniciar partida: el jugador ve la palabra oculta con guiones y 6 vidas | Ahorcado se crea con una palabra; la palabra enmascarada muestra guiones para cada letra |
+| CA-3: no se puede adivinar antes de iniciar | (cubierto por el AT anterior: sin partida iniciada no hay input disponible) | - |
 
 ---
 
@@ -40,19 +44,17 @@ construyendo una base solida para todo lo que viene despues.
 
 | Historia | Escenarios | Estado |
 |---|---|---|
-| US-07 Ingresar una letra | AT: acertar, fallar, repetir letra | En progreso |
+| US-01 Iniciar partida nueva | AT: iniciar partida, ver palabra oculta | En progreso |
 
 ---
 
 ## Como leer la trazabilidad de este repo
 
-Cada archivo .feature lleva la etiqueta @US-07 (o el ID de la historia correspondiente)
-en su Caracteristica, y cada escenario lleva la etiqueta del criterio de aceptacion que confirma
-(ej: @CA-2). Los unit tests del dominio estan en 	ests/Ahorcado.test.ts y esta tabla
-los vincula con sus escenarios.
+Cada archivo .feature lleva la etiqueta de la historia que confirma (ej: @US-01)
+y cada escenario lleva la etiqueta del criterio que cubre (ej: @CA-1).
+Los unit tests del dominio estan en 	ests/Ahorcado.test.ts.
 
 Para ver todos los AT de una historia:
-  npx bddgen && npx playwright test --grep @US-07
+  npx bddgen && npx playwright test --grep @US-01
 
-Para ver todos los unit tests relacionados, buscar en tests/Ahorcado.test.ts
-los bloques describe correspondientes o consultar esta tabla.
+Para saber que unit tests corresponden a cada AT, ver la tabla de arriba.
