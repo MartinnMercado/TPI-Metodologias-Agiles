@@ -1,9 +1,9 @@
-﻿import { expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
 
 const { Given, When, Then } = createBdd();
 
-// Abre la app sin palabra especifica (usa la pantalla de inicio)
+// Abre la app sin palabra especifica (pantalla de inicio)
 Given('que abro la aplicacion', async ({ page }) => {
   await page.goto('/');
 });
