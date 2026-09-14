@@ -1,0 +1,29 @@
+﻿# =============================================
+# Carpeta privada del alumno (materiales del profe)
+# No debe subirse al repositorio del grupo
+# =============================================
+Proyecto Ahorcado/
+
+# Dependencias de Node.js
+node_modules/
+
+# Archivos generados por playwright-bdd (se regeneran automáticamente)
+.features-gen/
+
+# Reportes y resultados de tests (generados al correr los tests)
+test-results/
+playwright-report/
+
+# Cobertura de codigo (generada por Vitest)
+coverage/
+
+# Build de produccion (generado al buildear)
+dist/
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Variables de entorno locales (pueden contener datos sensibles)
+.env
+.env.local
