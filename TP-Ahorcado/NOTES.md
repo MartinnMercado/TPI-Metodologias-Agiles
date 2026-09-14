@@ -10,22 +10,21 @@
 
 ### Por que arrancamos con esta historia
 
-Al principio ibamos a arrancar con US-07 (ingresar una letra), pero nos dimos cuenta de
-que no tiene sentido pensar en adivinar letras si todavia no hay una partida en curso con
-una palabra a descubrir. US-01 es el punto de entrada de todo: sin ella no existe el juego.
+Arrancamos con US-01 porque es el punto de entrada de todo el juego. No tiene sentido
+pensar en adivinar letras si primero no hay una partida iniciada con una palabra. El
+Story Map lo refleja: el flujo del jugador empieza en "Iniciar Partida".
 
-Ademas, el Story Map lo deja claro: el backbone del jugador empieza en "Iniciar Partida"
-(epic 1) y desde ahi baja al resto. Siguiendo ese orden natural, US-01 va primero.
+Durante los tests, la palabra se inyecta por la URL (?word=GATO) para que el resultado
+sea siempre predecible.
 
-En los tests, la palabra se inyecta por la URL (?word=GATO) para que sea siempre la
-misma y el resultado sea predecible.
+### Criterios de aceptacion
 
-### Criterios de aceptacion (lo que define que la historia esta terminada)
+Escritos desde lo que el jugador ve, con ejemplo concreto (palabra GATO):
 
-- CA-1: Al entrar a la app, veo un boton para iniciar partida.
-- CA-2: Al tocarlo, el juego selecciona una palabra y arranca la partida.
-- CA-3: No puedo empezar a adivinar letras antes de iniciar la partida.
-- CA-4: Cada partida nueva usa una palabra distinta a la anterior (si el mazzo lo permite).
+- CA-1: Al entrar a la app, veo un boton para iniciar la partida.
+- CA-2: Al hacer clic en ese boton, veo la palabra oculta representada con guiones
+        separados por espacios. Con GATO: veo "_ _ _ _".
+- CA-3: Al iniciar, veo cuantas vidas tengo disponibles (6 al empezar).
 
 ---
 
@@ -35,8 +34,9 @@ misma y el resultado sea predecible.
 
 | Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado |
 |---|---|---|
-| CA-1 y CA-2: al iniciar, arranca la partida con una palabra | Iniciar partida: el jugador ve la palabra oculta con guiones y 6 vidas | Ahorcado se crea con una palabra; la palabra enmascarada muestra guiones para cada letra |
-| CA-3: no se puede adivinar antes de iniciar | (cubierto por el AT anterior: sin partida iniciada no hay input disponible) | - |
+| CA-1: veo el boton al entrar | El jugador ve el boton de inicio | (no requiere logica de dominio, es solo UI) |
+| CA-2: veo la palabra con guiones al iniciar | El jugador inicia una partida con GATO y ve "_ _ _ _" | Ahorcado con "GATO" devuelve "_ _ _ _" en palabraEnmascarada() |
+| CA-3: veo 6 vidas al iniciar | (mismo escenario que CA-2) | Ahorcado arranca con 6 vidas en vidas() |
 
 ---
 
@@ -44,17 +44,14 @@ misma y el resultado sea predecible.
 
 | Historia | Escenarios | Estado |
 |---|---|---|
-| US-01 Iniciar partida nueva | AT: iniciar partida, ver palabra oculta | En progreso |
+| US-01 Iniciar partida nueva | AT: ver boton, iniciar con GATO | En progreso |
 
 ---
 
 ## Como leer la trazabilidad de este repo
 
-Cada archivo .feature lleva la etiqueta de la historia que confirma (ej: @US-01)
-y cada escenario lleva la etiqueta del criterio que cubre (ej: @CA-1).
-Los unit tests del dominio estan en 	ests/Ahorcado.test.ts.
+Cada .feature lleva la etiqueta de la historia (@US-01) y cada escenario lleva la del
+criterio que confirma (@CA-1, @CA-2, etc.).
 
-Para ver todos los AT de una historia:
+Para correr solo los AT de una historia:
   npx bddgen && npx playwright test --grep @US-01
-
-Para saber que unit tests corresponden a cada AT, ver la tabla de arriba.
