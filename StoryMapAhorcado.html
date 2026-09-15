@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story Map — El Ahorcado</title>
+<style>
+  :root{
+    --paper:#f6f4ee;
+    --ink:#242423;
+    --ink-soft:#5b5954;
+    --line:#d9d5c9;
+    --mvp:#3c6e58;
+    --mvp-bg:#e7efe9;
+    --r2:#a6742f;
+    --r2-bg:#f4ecdd;
+    --r3:#7a4fa3;
+    --r3-bg:#efe7f6;
+    --error:#b33f3f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+    line-height:1.5;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 32px 96px;}
+
+  header.hero{
+    border-bottom:3px solid var(--ink);
+    padding-bottom:28px;
+    margin-bottom:40px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:24px;
+    align-items:end;
+  }
+  header.hero h1{
+    font-size:clamp(2.1rem,4vw,3rem);
+    margin:0 0 6px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  header.hero p.sub{margin:0;color:var(--ink-soft);font-size:1.05rem;max-width:56ch;}
+  .gallows{width:96px;height:96px;flex-shrink:0;}
+  .meta{
+    font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    text-align:right;
+  }
+
+  h2.section-title{
+    font-size:1.5rem;
+    margin:56px 0 8px;
+    font-weight:600;
+  }
+  p.section-note{color:var(--ink-soft);margin:0 0 24px;max-width:78ch;}
+
+  /* legend */
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 24px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:0.8rem;}
+  .legend span{display:inline-flex;align-items:center;gap:8px;}
+  .dot{width:11px;height:11px;border-radius:2px;display:inline-block;}
+  .dot.mvp{background:var(--mvp);}
+  .dot.r2{background:var(--r2);}
+  .dot.r3{background:var(--r3);}
+
+  /* backbone board */
+  .board{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:14px;
+    align-items:start;
+  }
+  .epic-col{display:flex;flex-direction:column;gap:10px;}
+  .epic-head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:12px 12px;
+    text-align:center;
+    font-weight:600;
+    font-size:0.92rem;
+    letter-spacing:0.01em;
+  }
+  .epic-head small{
+    display:block;
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:400;
+    font-size:0.68rem;
+    color:#c8c4b7;
+    margin-top:3px;
+  }
+  .story-card{
+    border:1.5px solid var(--line);
+    background:#fff;
+    padding:10px 11px;
+    font-size:0.82rem;
+    border-left:5px solid var(--line);
+    position:relative;
+  }
+  .story-card .id{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.66rem;
+    color:var(--ink-soft);
+    display:block;
+    margin-bottom:3px;
+  }
+  .story-card.mvp{border-left-color:var(--mvp);background:var(--mvp-bg);}
+  .story-card.r2{border-left-color:var(--r2);background:var(--r2-bg);}
+  .story-card.r3{border-left-color:var(--r3);background:var(--r3-bg);}
+  .badge{
+    float:right;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.6rem;
+    padding:1px 5px;
+    border-radius:3px;
+    color:#fff;
+  }
+  .badge.mvp{background:var(--mvp);}
+  .badge.r2{background:var(--r2);}
+  .badge.r3{background:var(--r3);}
+
+  /* release summary table */
+  table.releases{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:36px;
+    font-size:0.88rem;
+  }
+  table.releases th, table.releases td{
+    border:1px solid var(--line);
+    padding:10px 12px;
+    text-align:left;
+    vertical-align:top;
+  }
+  table.releases th{background:var(--ink);color:var(--paper);font-weight:600;}
+  table.releases tr:nth-child(odd) td{background:#fbfaf6;}
+  table.releases td.tag{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .tag.mvp{color:var(--mvp);}
+  .tag.r2{color:var(--r2);}
+  .tag.r3{color:var(--r3);}
+
+  /* story catalog */
+  .catalog{display:flex;flex-direction:column;gap:36px;}
+  .epic-block h3{
+    font-size:1.15rem;
+    margin:0 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .epic-block h3 .count{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.7rem;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:14px;}
+  .us-card{
+    border:1.5px solid var(--line);
+    background:#fff;
+    padding:16px 18px;
+    border-top:4px solid var(--line);
+  }
+  .us-card.mvp{border-top-color:var(--mvp);}
+  .us-card.r2{border-top-color:var(--r2);}
+  .us-card.r3{border-top-color:var(--r3);}
+  .us-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .us-card .id{font-family:"IBM Plex Mono",monospace;font-size:0.68rem;color:var(--ink-soft);}
+  .us-card p.chv{margin:0 0 10px;font-size:0.92rem;}
+  .us-card p.chv b{font-family:"IBM Plex Mono",monospace;font-size:0.7rem;color:var(--ink-soft);display:block;margin-bottom:1px;}
+  .us-card ul.ac{margin:8px 0 0;padding-left:18px;font-size:0.83rem;color:var(--ink-soft);}
+  .us-card ul.ac li{margin-bottom:4px;}
+  .us-card ul.ac{border-top:1px dashed var(--line);padding-top:8px;}
+  .us-card .ac-label{font-family:"IBM Plex Mono",monospace;font-size:0.66rem;text-transform:none;color:var(--ink-soft);display:block;margin-top:4px;}
+
+  footer{margin-top:64px;border-top:1px solid var(--line);padding-top:18px;font-size:0.8rem;color:var(--ink-soft);}
+
+  @media (max-width:900px){
+    .board{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:560px){
+    .board{grid-template-columns:1fr 1fr;}
+    header.hero{grid-template-columns:1fr;}
+    .meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <h1>Story Map — El Ahorcado</h1>
+      <p class="sub">Flujo del jugador de punta a punta, backbone de actividades, user stories bajadas de cada una y el corte de releases (MVP, Release 2, Release 3). El slicing no es una línea horizontal pareja: cada actividad se descompone en la cantidad de historias que realmente necesita.</p>
+    </div>
+    <svg class="gallows" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="15" y1="90" x2="60" y2="90" stroke="#242423" stroke-width="3"/>
+      <line x1="30" y1="90" x2="30" y2="10" stroke="#242423" stroke-width="3"/>
+      <line x1="30" y1="10" x2="72" y2="10" stroke="#242423" stroke-width="3"/>
+      <line x1="72" y1="10" x2="72" y2="24" stroke="#242423" stroke-width="3"/>
+      <circle cx="72" cy="32" r="8" stroke="#b33f3f" stroke-width="3"/>
+    </svg>
+  </header>
+
+  <section>
+    <h2 class="section-title">Backbone del flujo</h2>
+    <p class="section-note">Usuario: el jugador del ahorcado. Recorrido horizontal = experiencia del usuario. Cada columna baja en historias de detalle (vertical). El color de cada tarjeta indica en qué release entra esa historia.</p>
+
+    <div class="legend">
+      <span><i class="dot mvp"></i> MVP / Release 1 — jugable end-to-end</span>
+      <span><i class="dot r2"></i> Release 2</span>
+      <span><i class="dot r3"></i> Release 3</span>
+    </div>
+
+    <div class="board">
+
+      <div class="epic-col">
+        <div class="epic-head">Iniciar Partida<small>epic 1</small></div>
+        <div class="story-card mvp"><span class="id">US-01</span>Iniciar partida nueva<span class="badge mvp">MVP</span></div>
+        <div class="story-card r2"><span class="id">US-02</span>Ver instrucciones del juego<span class="badge r2">R2</span></div>
+      </div>
+
+      <div class="epic-col">
+        <div class="epic-head">Configurar Partida<small>epic 2</small></div>
+        <div class="story-card mvp"><span class="id">US-03</span>Elegir la dificultad<span class="badge mvp">MVP</span></div>
+        <div class="story-card r2"><span class="id">US-04</span>Elegir categoría de palabras<span class="badge r2">R2</span></div>
+        <div class="story-card r2"><span class="id">US-05</span>Confirmar la configuración<span class="badge r2">R2</span></div>
+      </div>
+
+      <div class="epic-col">
+        <div class="epic-head">Jugar<small>epic 3</small></div>
+        <div class="story-card mvp"><span class="id">US-06</span>Ver la palabra oculta<span class="badge mvp">MVP</span></div>
+        <div class="story-card mvp"><span class="id">US-07</span>Ingresar una letra<span class="badge mvp">MVP</span></div>
+        <div class="story-card mvp"><span class="id">US-08</span>Ver mis aciertos y errores<span class="badge mvp">MVP</span></div>
+        <div class="story-card r2"><span class="id">US-09</span>Ver las letras ya usadas<span class="badge r2">R2</span></div>
+        <div class="story-card r2"><span class="id">US-10</span>Ver intentos restantes<span class="badge r2">R2</span></div>
+      </div>
+
+      <div class="epic-col">
+        <div class="epic-head">Finalizar Partida<small>epic 4</small></div>
+        <div class="story-card mvp"><span class="id">US-11</span>Saber si gané o perdí<span class="badge mvp">MVP</span></div>
+        <div class="story-card r2"><span class="id">US-12</span>Ver la palabra completa al perder<span class="badge r2">R2</span></div>
+        <div class="story-card r2"><span class="id">US-13</span>Volver a jugar<span class="badge r2">R2</span></div>
+      </div>
+
+      <div class="epic-col">
+        <div class="epic-head">Consultar Puntaje<small>epic 5</small></div>
+        <div class="story-card mvp"><span class="id">US-14</span>Ver mi puntaje de la partida<span class="badge mvp">MVP</span></div>
+        <div class="story-card r2"><span class="id">US-15</span>Ver mi mejor puntaje<span class="badge r2">R2</span></div>
+        <div class="story-card r3"><span class="id">US-16</span>Ver estadísticas (ganadas/perdidas)<span class="badge r3">R3</span></div>
+      </div>
+
+      <div class="epic-col">
+        <div class="epic-head">Compartir Resultado<small>epic 6</small></div>
+        <div class="story-card r3"><span class="id">US-17</span>Compartir resultado en redes<span class="badge r3">R3</span></div>
+        <div class="story-card r3"><span class="id">US-18</span>Copiar resultado al portapapeles<span class="badge r3">R3</span></div>
+      </div>
+
+    </div>
+
+    <table class="releases">
+      <thead>
+        <tr><th>Release</th><th>Qué entrega</th><th>Historias que incluye</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tag mvp">MVP / Release 1</td>
+          <td>Partida jugable de punta a punta: arranco el juego, elijo dificultad, adivino la palabra letra por letra viendo mis aciertos y errores, y al final sé si gané o perdí y cuánto saqué. Es chico pero es un ahorcado completo, no un prototipo a medias.</td>
+          <td>US-01, US-03, US-06, US-07, US-08, US-11, US-14</td>
+        </tr>
+        <tr>
+          <td class="tag r2">Release 2</td>
+          <td>Le suma comodidad y contexto al juego: instrucciones, elegir categoría, ver qué letras ya usé, cuántos intentos me quedan, ver la palabra al perder, volver a jugar sin recargar todo, y guardar mi mejor puntaje.</td>
+          <td>US-02, US-04, US-05, US-09, US-10, US-12, US-13, US-15</td>
+        </tr>
+        <tr>
+          <td class="tag r3">Release 3</td>
+          <td>Valor agregado sobre un juego que ya funciona: estadísticas históricas y compartir el resultado afuera de la app.</td>
+          <td>US-16, US-17, US-18</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="section-title">Catálogo de user stories y criterios de aceptación</h2>
+    <p class="section-note">Formato Como / Quiero / Para, con los criterios de aceptación que definen cuándo cada historia está terminada y es exitosa.</p>
+
+    <div class="catalog">
+
+      <div class="epic-block">
+        <h3>1. Iniciar Partida <span class="count">2 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-01</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> iniciar una partida nueva<br><b>Para</b> empezar a jugar al ahorcado</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Al entrar a la app veo un botón para iniciar partida.</li>
+              <li>Al tocarlo, el juego selecciona una palabra y arranca la partida.</li>
+              <li>No puedo empezar a adivinar letras antes de iniciar la partida.</li>
+              <li>Cada partida nueva usa una palabra distinta a la anterior (si el mazo lo permite).</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-02</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver las instrucciones del juego<br><b>Para</b> entender cómo jugar antes de arrancar</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Hay un acceso a "Cómo jugar" visible desde la pantalla inicial.</li>
+              <li>Las instrucciones explican qué es adivinar una letra y qué pasa si me equivoco.</li>
+              <li>Puedo cerrar las instrucciones y volver a la pantalla inicial sin perder nada.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="epic-block">
+        <h3>2. Configurar Partida <span class="count">3 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-03</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> elegir la dificultad<br><b>Para</b> adaptar el desafío a lo que busco</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Puedo elegir entre al menos dos niveles (ej: fácil / difícil) antes de iniciar.</li>
+              <li>La dificultad define la cantidad de errores permitidos y/o la longitud de la palabra.</li>
+              <li>Si no elijo nada, el juego arranca con una dificultad por defecto.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-04</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> elegir una categoría de palabras<br><b>Para</b> jugar con temas que me interesan</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Puedo ver una lista de categorías disponibles (ej: animales, países, comida).</li>
+              <li>La palabra sorteada pertenece a la categoría elegida.</li>
+              <li>Si no elijo categoría, el juego sortea de todas las categorías.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-05</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> confirmar la configuración<br><b>Para</b> empezar la partida con esas reglas y no otras</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Antes de arrancar, veo un resumen de dificultad y categoría elegidas.</li>
+              <li>Tengo un botón explícito para confirmar y recién ahí arranca la partida.</li>
+              <li>Puedo volver atrás y cambiar la configuración antes de confirmar.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="epic-block">
+        <h3>3. Jugar <span class="count">5 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-06</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver la palabra oculta<br><b>Para</b> saber qué tengo que descubrir</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Veo un guion bajo (o similar) por cada letra de la palabra a adivinar.</li>
+              <li>No veo ninguna letra de la palabra real todavía.</li>
+              <li>La cantidad de espacios coincide exactamente con la longitud de la palabra.</li>
+            </ul>
+          </div>
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-07</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ingresar una letra<br><b>Para</b> intentar descubrir la palabra</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Solo se acepta una letra por vez.</li>
+              <li>Si la letra está en la palabra, se revela en todas sus posiciones.</li>
+              <li>Si la letra no está, se registra como error.</li>
+              <li>No se puede repetir una letra ya ingresada en esa partida.</li>
+            </ul>
+          </div>
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-08</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver mis aciertos y errores<br><b>Para</b> saber cómo va la partida</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Cada acierto actualiza la palabra mostrando la letra correcta.</li>
+              <li>Cada error actualiza el dibujo o contador del ahorcado.</li>
+              <li>El estado se actualiza inmediatamente después de cada intento.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-09</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver las letras que ya usé<br><b>Para</b> no repetir una letra por error</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Veo una lista o teclado con las letras ya ingresadas marcadas.</li>
+              <li>Distingo visualmente las letras acertadas de las erradas.</li>
+              <li>Las letras no usadas siguen disponibles para ingresar.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-10</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver cuántos intentos me quedan<br><b>Para</b> saber qué tan cerca estoy de perder</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Veo un contador o indicador visual de errores restantes.</li>
+              <li>El contador baja en cada error, nunca en un acierto.</li>
+              <li>Cuando llega a cero, la partida termina automáticamente.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="epic-block">
+        <h3>4. Finalizar Partida <span class="count">3 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-11</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> saber si gané o perdí<br><b>Para</b> conocer el resultado de la partida</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Gano si completo la palabra antes de agotar los errores permitidos.</li>
+              <li>Pierdo si agoto los errores permitidos antes de completar la palabra.</li>
+              <li>Al terminar, veo un mensaje claro de "ganaste" o "perdiste".</li>
+              <li>Una vez definido el resultado, no puedo seguir ingresando letras.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-12</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver la palabra completa al perder<br><b>Para</b> saber cuál era la respuesta correcta</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Al perder, se muestra la palabra completa sin espacios ocultos.</li>
+              <li>Si gano, no hace falta este mensaje porque ya la completé yo.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-13</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> volver a jugar<br><b>Para</b> empezar otra partida sin salir de la app</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Al terminar la partida veo un botón para jugar de nuevo.</li>
+              <li>Al tocarlo se reinicia todo el estado (letras, errores, palabra).</li>
+              <li>Se respeta la última configuración elegida, salvo que la cambie.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="epic-block">
+        <h3>5. Consultar Puntaje <span class="count">3 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card mvp">
+            <div class="head"><span class="id">US-14</span><span class="badge mvp">MVP</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver mi puntaje al finalizar la partida<br><b>Para</b> conocer mi desempeño</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Al ganar, veo un puntaje calculado (ej: en base a errores cometidos).</li>
+              <li>Al perder, el puntaje se muestra en cero o según la regla definida.</li>
+              <li>El puntaje se muestra junto con el resultado de la partida.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r2">
+            <div class="head"><span class="id">US-15</span><span class="badge r2">R2</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver mi mejor puntaje<br><b>Para</b> comparar mis resultados entre partidas</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>El mejor puntaje se guarda entre partidas mientras uso la app.</li>
+              <li>Se actualiza solo si el puntaje nuevo es mayor al guardado.</li>
+              <li>Puedo ver el mejor puntaje desde la pantalla de resultado.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r3">
+            <div class="head"><span class="id">US-16</span><span class="badge r3">R3</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> ver estadísticas de ganadas y perdidas<br><b>Para</b> tener una foto general de cómo me fue</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Veo la cantidad total de partidas jugadas.</li>
+              <li>Veo cuántas gané y cuántas perdí, por separado.</li>
+              <li>Las estadísticas se actualizan después de cada partida.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="epic-block">
+        <h3>6. Compartir Resultado <span class="count">2 historias</span></h3>
+        <div class="cards">
+
+          <div class="us-card r3">
+            <div class="head"><span class="id">US-17</span><span class="badge r3">R3</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> compartir mi resultado en redes<br><b>Para</b> mostrarles a otros cómo me fue</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Desde la pantalla de resultado tengo una opción para compartir.</li>
+              <li>El contenido compartido incluye si gané o perdí y el puntaje.</li>
+              <li>Si cancelo el compartir, vuelvo a la pantalla de resultado sin errores.</li>
+            </ul>
+          </div>
+
+          <div class="us-card r3">
+            <div class="head"><span class="id">US-18</span><span class="badge r3">R3</span></div>
+            <p class="chv"><b>Como</b> jugador<br><b>Quiero</b> copiar mi resultado al portapapeles<br><b>Para</b> pegarlo donde yo quiera</p>
+            <span class="ac-label">Criterios de aceptación</span>
+            <ul class="ac">
+              <li>Un botón "copiar" genera un texto con resultado y puntaje.</li>
+              <li>Veo una confirmación breve de que se copió correctamente.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    Story Map — Metodologías Ágiles, TP Ahorcado. Backbone de 6 actividades, 18 user stories, 3 releases. El MVP no sigue una fila horizontal pareja: "Jugar" necesitó 3 historias para ser jugable de punta a punta, mientras que "Iniciar Partida" y "Finalizar Partida" alcanzaron con 1 cada una.
+  </footer>
+
+</div>
+</body>
+</html>

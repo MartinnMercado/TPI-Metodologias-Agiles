@@ -1,4 +1,9 @@
-﻿# NOTES — TP Ahorcado
+# NOTES — TP Ahorcado
+
+## Story Map del proyecto
+El Story Map interactivo con las Historias de Usuario está disponible en: [StoryMapAhorcado.html](../StoryMapAhorcado.html)
+
+---
 
 ## Historia de usuario que estamos atacando primero
 

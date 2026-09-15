@@ -13,7 +13,7 @@ Este proyecto se construye siguiendo la Guía de ATDD, asegurando la calidad en 
 1.  **Acceptance Tests (Loop Externo):** Utilizando **Cucumber/Gherkin**, automatizamos el comportamiento de la aplicación desde la perspectiva del usuario (vía un navegador real usando Playwright/Selenium). Mínimo 4 ATs que trazan directamente a nuestras Historias de Usuario.
 2.  **Unit Tests (Loop Interno):** La lógica de dominio se construye mediante **TDD** estricto, sin depender del DOM ni de la UI.
 3.  **Proceso Rojo/Verde:** Cada test (unitario o de aceptación) se evidencia en el historial de Git con commits explícitos `RED: [mensaje]` y `GREEN: [mensaje]`.
-4.  **Trazabilidad:** La relación entre Historias de Usuario -> Acceptance Tests -> Unit Tests está documentada y es trazable bidireccionalmente (ver `NOTES.md` y nuestro tablero de Historias).
+4.  **Trazabilidad:** La relación entre Historias de Usuario -> Acceptance Tests -> Unit Tests está documentada y es trazable bidireccionalmente (ver `NOTES.md` y nuestro [Story Map](StoryMapAhorcado.html)).
 5.  **Rotación de Autores:** El desarrollo es colaborativo; cada integrante actúa como autor de al menos 3 ciclos TDD (RED/GREEN).
 
 ## 🛠️ Stack Tecnológico Sugerido

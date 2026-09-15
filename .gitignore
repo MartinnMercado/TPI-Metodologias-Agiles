@@ -1,4 +1,4 @@
-﻿# =============================================
+# =============================================
 # Carpeta privada del alumno (materiales del profe)
 # No debe subirse al repositorio del grupo
 # =============================================
@@ -32,5 +32,4 @@ Thumbs.db
 CONSIGNA-TP.md
 GUIA-ATDD-IA-Ahorcado.md
 PromptAhorcado.md
-StoryMapAhorcado.html
 TP-Ahorcado/EXPLICACIONES.md
