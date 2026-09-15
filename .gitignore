@@ -27,9 +27,3 @@ Thumbs.db
 # Variables de entorno locales (pueden contener datos sensibles)
 .env
 .env.local
-
-# Archivos privados del alumno (materiales del profesor)
-CONSIGNA-TP.md
-GUIA-ATDD-IA-Ahorcado.md
-PromptAhorcado.md
-TP-Ahorcado/EXPLICACIONES.md
