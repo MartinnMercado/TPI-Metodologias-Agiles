@@ -15,4 +15,10 @@ describe('Ahorcado - US-01 Iniciar partida', () => {
     expect(juego.palabraEnmascarada()).toBe('_ _ _ _ _');
   });
 
+  // El juego arranca siempre con 6 vidas disponibles
+  it('el juego arranca con 6 vidas', () => {
+    const juego = new Ahorcado('GATO');
+    expect(juego.vidas()).toBe(6);
+  });
+
 });
