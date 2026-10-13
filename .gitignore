@@ -1,8 +1,12 @@
-# =============================================
-# Carpeta privada del alumno (materiales del profe)
-# No debe subirse al repositorio del grupo
-# =============================================
 Proyecto Ahorcado/
+
+
+EXPLICACIONES.md
+Prompt_Agente_Antigravity_Ahorcado.md
+
+# PDFs de la cátedra (materiales del profe, no van al repo)
+CONSIGNA-TP.pdf
+GUIA-ATDD-IA-Ahorcado.pdf
 
 # Dependencias de Node.js
 node_modules/
