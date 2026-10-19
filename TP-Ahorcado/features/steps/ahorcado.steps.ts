@@ -1,34 +1,49 @@
-import { expect } from '@playwright/test';
-import { createBdd } from 'playwright-bdd';
+import { expect } from "@playwright/test";
+import { createBdd } from "playwright-bdd";
 
 const { Given, When, Then } = createBdd();
 
 // Abre la app sin palabra especifica (pantalla de inicio)
-Given('que abro la aplicacion', async ({ page }) => {
-  await page.goto('/');
+Given("que abro la aplicacion", async ({ page }) => {
+  await page.goto("/");
 });
 
 // Abre la app inyectando la palabra por URL (seam de testing)
-Given('que abro la aplicacion con la palabra {string}', async ({ page }, palabra: string) => {
-  await page.goto(`/?word=${palabra}`);
-});
+Given(
+  "que abro la aplicacion con la palabra {string}",
+  async ({ page }, palabra: string) => {
+    await page.goto(`/?word=${palabra}`);
+  },
+);
 
 // Verifica que existe el boton para iniciar
-Then('veo un boton para iniciar la partida', async ({ page }) => {
-  await expect(page.getByRole('button', { name: /iniciar partida/i })).toBeVisible();
+Then("veo un boton para iniciar la partida", async ({ page }) => {
+  await expect(
+    page.getByRole("button", { name: /iniciar partida/i }),
+  ).toBeVisible();
 });
 
 // El jugador hace clic en el boton de inicio
-When('hago clic en iniciar partida', async ({ page }) => {
-  await page.getByRole('button', { name: /iniciar partida/i }).click();
+When("hago clic en iniciar partida", async ({ page }) => {
+  await page.getByRole("button", { name: /iniciar partida/i }).click();
 });
 
+// El jugador tipea una letra en la caja de texto y presiona Enter
+When(
+  "el jugador adivina la letra {string}",
+  async ({ page }, letra: string) => {
+    const input = page.getByRole("textbox");
+    await input.fill(letra);
+    await input.press("Enter");
+  },
+);
+
 // Verifica que la palabra aparece enmascarada con guiones separados por espacios
-Then('veo la palabra oculta {string}', async ({ page }, esperada: string) => {
-  await expect(page.getByTestId('word')).toHaveText(esperada);
+Then("veo la palabra oculta {string}", async ({ page }, esperada: string) => {
+  await expect(page.getByTestId("word")).toHaveText(esperada);
 });
 
 // Verifica la cantidad de vidas disponibles al iniciar
-Then('veo {int} vidas', async ({ page }, vidas: number) => {
-  await expect(page.getByTestId('lives')).toHaveText(String(vidas));
+Then("veo {int} vidas", async ({ page }, vidas: number) => {
+  await expect(page.getByTestId("lives")).toHaveText(String(vidas));
 });
