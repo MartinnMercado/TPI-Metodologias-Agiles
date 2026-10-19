@@ -1,24 +1,27 @@
-import { describe, it, expect } from 'vitest';
-import { Ahorcado } from '../src/domain/Ahorcado';
+import { describe, it, expect } from "vitest";
+import { Ahorcado } from "../src/domain/Ahorcado";
 
-describe('Ahorcado - US-01 Iniciar partida', () => {
-
-  // Primer ejemplo: palabra de 4 letras
-  it('la palabra enmascarada muestra un guion por cada letra (GATO)', () => {
-    const juego = new Ahorcado('GATO');
-    expect(juego.palabraEnmascarada()).toBe('_ _ _ _');
+describe("Ahorcado - US-01 Iniciar partida", () => {
+  it("la palabra enmascarada muestra un guion por cada letra (GATO)", () => {
+    const juego = new Ahorcado("GATO");
+    expect(juego.palabraEnmascarada()).toBe("_ _ _ _");
   });
 
-  // Segundo ejemplo: palabra de 5 letras, confirma que funciona para cualquier longitud
-  it('la palabra enmascarada muestra un guion por cada letra (PERRO)', () => {
-    const juego = new Ahorcado('PERRO');
-    expect(juego.palabraEnmascarada()).toBe('_ _ _ _ _');
+  it("la palabra enmascarada muestra un guion por cada letra (PERRO)", () => {
+    const juego = new Ahorcado("PERRO");
+    expect(juego.palabraEnmascarada()).toBe("_ _ _ _ _");
   });
 
-  // El juego arranca siempre con 6 vidas disponibles
-  it('el juego arranca con 6 vidas', () => {
-    const juego = new Ahorcado('GATO');
+  it("el juego arranca con 6 vidas", () => {
+    const juego = new Ahorcado("GATO");
     expect(juego.vidas()).toBe(6);
   });
+});
 
+describe("Ahorcado - US-02 Adivinar letras", () => {
+  it("al acertar una letra se revela en la palabra enmascarada", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("A");
+    expect(juego.palabraEnmascarada()).toBe("_ A _ _");
+  });
 });

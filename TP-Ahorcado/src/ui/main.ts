@@ -1,20 +1,22 @@
-import { Ahorcado } from '../domain/Ahorcado';
+import { Ahorcado } from "../domain/Ahorcado";
 
-// Lee la palabra desde el parámetro URL (?word=...) o usa "GATO" por defecto (seam de test)
 function obtenerPalabra(): string {
   const params = new URLSearchParams(window.location.search);
-  return params.get('word') || 'GATO';
+  return params.get("word") || "GATO";
 }
 
-const btnIniciar = document.getElementById('btn-iniciar') as HTMLButtonElement;
-const pantallaJuego = document.getElementById('pantalla-juego') as HTMLElement;
-const elemPalabra = document.getElementById('word') as HTMLElement;
-const elemVidas = document.getElementById('lives') as HTMLElement;
+const btnIniciar = document.getElementById("btn-iniciar") as HTMLButtonElement;
+const pantallaJuego = document.getElementById("pantalla-juego") as HTMLElement;
+const elemPalabra = document.getElementById("word") as HTMLElement;
+const elemVidas = document.getElementById("lives") as HTMLElement;
+const inputLetra = document.getElementById("input-letra") as HTMLInputElement;
+
+let juego: Ahorcado;
 
 if (btnIniciar) {
-  btnIniciar.addEventListener('click', () => {
+  btnIniciar.addEventListener("click", () => {
     const palabra = obtenerPalabra();
-    const juego = new Ahorcado(palabra);
+    juego = new Ahorcado(palabra);
 
     if (elemPalabra) {
       elemPalabra.textContent = juego.palabraEnmascarada();
@@ -23,7 +25,28 @@ if (btnIniciar) {
       elemVidas.textContent = String(juego.vidas());
     }
     if (pantallaJuego) {
-      pantallaJuego.style.display = 'block';
+      pantallaJuego.style.display = "block";
+    }
+    if (inputLetra) {
+      inputLetra.focus();
+    }
+  });
+}
+
+// Al presionar Enter en la caja de texto, se envía la letra a la lógica
+if (inputLetra) {
+  inputLetra.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && inputLetra.value.trim() !== "") {
+      if (juego) {
+        juego.adivinar(inputLetra.value);
+        if (elemPalabra) {
+          elemPalabra.textContent = juego.palabraEnmascarada();
+        }
+        if (elemVidas) {
+          elemVidas.textContent = String(juego.vidas());
+        }
+      }
+      inputLetra.value = "";
     }
   });
 }
