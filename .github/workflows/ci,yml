@@ -1,0 +1,45 @@
+name: CI Pipeline - Ahorcado
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build, Unit Tests, Coverage y Acceptance Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: TP-Ahorcado
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: TP-Ahorcado/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar navegadores de Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: 1. Compilación y Build
+        run: npm run build
+
+      - name: 2. Pruebas Unitarias de Dominio (Vitest)
+        run: npm test
+
+      - name: 3. Cobertura de Código (Umbral >= 90%)
+        run: npm run coverage
+
+      - name: 4. Acceptance Tests (Playwright)
+        run: npm run at
