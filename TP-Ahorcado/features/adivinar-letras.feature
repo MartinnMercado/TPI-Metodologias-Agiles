@@ -11,3 +11,11 @@ Feature: Ingresar letras y ver aciertos y errores
     And el jugador adivina la letra "A"
     Then veo la palabra oculta "_ A _ _"
     And veo 6 vidas
+
+  @CA-2
+  Scenario: El jugador falla una letra
+    Given que abro la aplicacion con la palabra "GATO"
+    When hago clic en iniciar partida
+    And el jugador adivina la letra "E"
+    Then veo la palabra oculta "_ _ _ _"
+    And veo 5 vidas
