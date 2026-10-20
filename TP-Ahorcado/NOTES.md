@@ -53,7 +53,8 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 | Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado | Estado |
 |---|---|---|---|
 | CA-1: acertar letra revela posiciones sin descontar vidas | El jugador acierta una letra (@CA-1) | `adivinar('A')` revela letra en `palabraEnmascarada()` | Verde ✅ |
-| CA-2: fallar letra descuenta una vida | El jugador falla una letra (@CA-2) | `adivinar('E')` descuenta 1 vida en `vidas()` | Pendiente ⏳ |
+| CA-2: fallar letra descuenta una vida | El jugador falla una letra (@CA-2) | `adivinar('E')` descuenta 1 vida en `vidas()` | Verde ✅ |
+| CA-3: letra repetida no descuenta vidas adicionales | El jugador no pierde vidas al repetir una letra (@CA-3) | `adivinar('E')` repetida mantiene 5 vidas | Pendiente ⏳ |
 
 ---
 
@@ -62,7 +63,7 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 | Historia | Release | Escenarios | Estado |
 |---|---|---|---|
 | US-01 Iniciar partida nueva | MVP (R1) | AT: ver botón, iniciar con GATO y 6 vidas | **Terminada** ✅ |
-| US-07 / US-08 Ingresar letra (aciertos y errores) | MVP (R1) | AT: acertar letra ('A') / fallar letra ('E') | **En progreso** 🟡 |
+| US-07 / US-08 Ingresar letra (aciertos y errores) | MVP (R1) | AT: acertar letra ('A') / fallar letra ('E') / letra repetida | **En progreso** 🟡 |
 
 ---
 
