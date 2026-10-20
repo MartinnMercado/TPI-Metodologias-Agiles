@@ -1,8 +1,8 @@
-@US-02
-Feature: Adivinar letras
+@US-07 @US-08
+Feature: Ingresar letras y ver aciertos y errores
   Como jugador
-  quiero adivinar letras
-  para ir descubriendo la palabra
+  quiero ingresar letras
+  para ir descubriendo la palabra y ver mis vidas restantes
 
   @CA-1
   Scenario: El jugador acierta una letra
