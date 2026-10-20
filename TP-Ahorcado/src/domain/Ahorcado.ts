@@ -22,9 +22,15 @@ export class Ahorcado {
     return this.vidasRestantes;
   }
 
-  // Registra la letra: si acierta la revela, si no pertenece descuenta una vida
+  // Registra la letra: ignora repetidas, si acierta revela y si falla descuenta una vida
   adivinar(letra: string): void {
     const letraNormalizada = letra.toUpperCase();
+
+    // Si la letra ya fue arriesgada previamente, no produce ningún efecto
+    if (this.letrasAdivinadas.has(letraNormalizada)) {
+      return;
+    }
+
     this.letrasAdivinadas.add(letraNormalizada);
 
     if (!this.palabra.includes(letraNormalizada)) {

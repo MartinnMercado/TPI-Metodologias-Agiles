@@ -32,4 +32,11 @@ describe('Ahorcado - US-07 / US-08 Adivinar letras', () => {
     expect(juego.palabraEnmascarada()).toBe('_ _ _ _');
     expect(juego.vidas()).toBe(5);
   });
+
+  it('arriesgar la misma letra errada no descuenta vidas adicionales', () => {
+    const juego = new Ahorcado('GATO');
+    juego.adivinar('E');
+    juego.adivinar('E');
+    expect(juego.vidas()).toBe(5);
+  });
 });
