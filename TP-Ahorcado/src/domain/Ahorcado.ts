@@ -12,9 +12,9 @@ export class Ahorcado {
   // Muestra las letras acertadas y guiones en las que faltan
   palabraEnmascarada(): string {
     return this.palabra
-      .split('')
-      .map((letra) => (this.letrasAdivinadas.has(letra) ? letra : '_'))
-      .join(' ');
+      .split("")
+      .map((letra) => (this.letrasAdivinadas.has(letra) ? letra : "_"))
+      .join(" ");
   }
 
   // Devuelve la cantidad de vidas disponibles
@@ -25,17 +25,22 @@ export class Ahorcado {
   // Devuelve el estado actual de la partida ('JUGANDO', 'GANADO', 'PERDIDO')
   estado(): string {
     if (this.vidasRestantes === 0) {
-      return 'PERDIDO';
+      return "PERDIDO";
     }
-    if (!this.palabraEnmascarada().includes('_')) {
-      return 'GANADO';
+    if (!this.palabraEnmascarada().includes("_")) {
+      return "GANADO";
     }
-    return 'JUGANDO';
+    return "JUGANDO";
+  }
+
+  // Calcula el puntaje de la partida
+  puntaje(): number {
+    return 0;
   }
 
   // Registra la letra: no hace nada si ya termino, ignora repetidas, acierta o descuenta vida
   adivinar(letra: string): void {
-    if (this.estado() !== 'JUGANDO') {
+    if (this.estado() !== "JUGANDO") {
       return;
     }
 
