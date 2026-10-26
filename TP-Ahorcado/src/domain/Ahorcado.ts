@@ -24,8 +24,12 @@ export class Ahorcado {
 
   // Devuelve el estado actual de la partida ('JUGANDO', 'GANADO', 'PERDIDO')
   estado(): string {
+    if (this.vidasRestantes === 0) {
+      return 'PERDIDO';
+    }
     return 'JUGANDO';
   }
+
 
 
   // Registra la letra: ignora repetidas, si acierta revela y si falla descuenta una vida

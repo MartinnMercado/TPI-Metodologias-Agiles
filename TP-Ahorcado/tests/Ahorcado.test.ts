@@ -42,7 +42,13 @@ describe('Ahorcado - US-07 / US-08 Adivinar letras', () => {
 });
 
 describe('Ahorcado - US-11 Finalizar partida', () => {
+  it('el juego arranca en estado JUGANDO', () => {
+    const juego = new Ahorcado('GATO');
+    expect(juego.estado()).toBe('JUGANDO');
+  });
+
   it('el juego pasa a estado PERDIDO al agotar las 6 vidas', () => {
+
     const juego = new Ahorcado('GATO');
     ['B', 'C', 'D', 'E', 'F', 'H'].forEach((letra) => juego.adivinar(letra));
     expect(juego.vidas()).toBe(0);
