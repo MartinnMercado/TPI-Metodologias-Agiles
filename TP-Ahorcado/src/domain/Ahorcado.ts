@@ -33,8 +33,12 @@ export class Ahorcado {
     return 'JUGANDO';
   }
 
-  // Registra la letra: ignora repetidas, si acierta revela y si falla descuenta una vida
+  // Registra la letra: no hace nada si ya termino, ignora repetidas, acierta o descuenta vida
   adivinar(letra: string): void {
+    if (this.estado() !== 'JUGANDO') {
+      return;
+    }
+
     const letraNormalizada = letra.toUpperCase();
 
     // Si la letra ya fue arriesgada previamente, no produce ningún efecto
