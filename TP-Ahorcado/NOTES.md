@@ -60,7 +60,13 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 | Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado | Estado |
 |---|---|---|---|
 | CA-1: perder partida al agotar vidas | El jugador pierde la partida al agotar las vidas (@CA-1) | `estado()` retorna 'PERDIDO' al llegar a 0 vidas | Verde ✅ |
-| CA-2: ganar partida al adivinar palabra | El jugador gana la partida al completar la palabra (@CA-2) | `estado()` retorna 'GANADO' al completar letras | Pendiente ⏳ |
+| CA-2: ganar partida al adivinar palabra | El jugador gana la partida al completar la palabra (@CA-2) | `estado()` retorna 'GANADO' al completar letras | Verde ✅ |
+| CA-3: bloquear entrada de letras al terminar | No se pueden ingresar letras una vez finalizada (@CA-3) | `adivinar()` ignora letras si no está en 'JUGANDO' | Verde ✅ |
+
+### US-14 Consultar puntaje (MVP)
+| Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado | Estado |
+|---|---|---|---|
+| CA-1: ver puntaje calculado al ganar | El jugador gana y ve su puntaje segun vidas (@CA-1) | `puntaje()` retorna `vidas * 100` al ganar | Pendiente ⏳ |
 
 ---
 
@@ -70,7 +76,8 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 |---|---|---|---|
 | US-01 Iniciar partida nueva | MVP (R1) | AT: ver botón, iniciar con GATO y 6 vidas | **Terminada** ✅ |
 | US-07 / US-08 Ingresar letra (aciertos y errores) | MVP (R1) | AT: acertar letra ('A') / fallar letra ('E') / letra repetida | **Terminada** ✅ |
-| US-11 Finalizar partida | MVP (R1) | AT: perder al agotar vidas / ganar al completar palabra | **En progreso** 🟡 |
+| US-11 Finalizar partida | MVP (R1) | AT: perder al agotar vidas / ganar / bloquear input | **Terminada** ✅ |
+| US-14 Consultar puntaje | MVP (R1) | AT: puntaje calculado al ganar partida | **En progreso** 🟡 |
 
 ---
 
