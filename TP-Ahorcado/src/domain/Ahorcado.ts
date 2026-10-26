@@ -27,10 +27,11 @@ export class Ahorcado {
     if (this.vidasRestantes === 0) {
       return 'PERDIDO';
     }
+    if (!this.palabraEnmascarada().includes('_')) {
+      return 'GANADO';
+    }
     return 'JUGANDO';
   }
-
-
 
   // Registra la letra: ignora repetidas, si acierta revela y si falla descuenta una vida
   adivinar(letra: string): void {
