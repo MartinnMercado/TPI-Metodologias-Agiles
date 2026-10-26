@@ -47,3 +47,9 @@ Then("veo la palabra oculta {string}", async ({ page }, esperada: string) => {
 Then("veo {int} vidas", async ({ page }, vidas: number) => {
   await expect(page.getByTestId("lives")).toHaveText(String(vidas));
 });
+
+// Verifica el mensaje de estado del juego (ej: GANASTE, PERDISTE)
+Then("veo el mensaje de estado {string}", async ({ page }, mensaje: string) => {
+  await expect(page.getByTestId("game-status")).toHaveText(mensaje);
+});
+
