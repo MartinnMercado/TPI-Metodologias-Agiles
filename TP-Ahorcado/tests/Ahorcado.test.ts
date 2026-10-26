@@ -75,3 +75,9 @@ describe("Ahorcado - US-14 Consultar puntaje", () => {
     expect(juego.puntaje()).toBe(600);
   });
 });
+
+it("al perder el puntaje es 0", () => {
+  const juego = new Ahorcado("GATO");
+  ["B", "C", "D", "E", "F", "H"].forEach((letra) => juego.adivinar(letra));
+  expect(juego.puntaje()).toBe(0);
+});

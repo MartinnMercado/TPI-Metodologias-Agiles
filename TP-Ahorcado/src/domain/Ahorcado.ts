@@ -33,8 +33,11 @@ export class Ahorcado {
     return "JUGANDO";
   }
 
-  // Calcula el puntaje de la partida
+  // Calcula el puntaje: vidas restantes * 100 si gano, 0 si no
   puntaje(): number {
+    if (this.estado() === "GANADO") {
+      return this.vidasRestantes * 100;
+    }
     return 0;
   }
 
