@@ -53,3 +53,7 @@ Then("veo el mensaje de estado {string}", async ({ page }, mensaje: string) => {
   await expect(page.getByTestId("game-status")).toHaveText(mensaje);
 });
 
+// Verifica que el campo de texto queda deshabilitado al terminar
+Then("el campo para ingresar letras esta deshabilitado", async ({ page }) => {
+  await expect(page.getByRole("textbox")).toBeDisabled();
+});

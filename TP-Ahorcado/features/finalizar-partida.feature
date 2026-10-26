@@ -27,3 +27,13 @@ Feature: Finalizar partida
     And el jugador adivina la letra "O"
     Then veo la palabra oculta "G A T O"
     And veo el mensaje de estado "GANASTE"
+
+  @CA-3
+  Scenario: No se pueden ingresar letras una vez finalizada la partida
+    Given que abro la aplicacion con la palabra "GATO"
+    When hago clic en iniciar partida
+    And el jugador adivina la letra "G"
+    And el jugador adivina la letra "A"
+    And el jugador adivina la letra "T"
+    And el jugador adivina la letra "O"
+    Then el campo para ingresar letras esta deshabilitado
