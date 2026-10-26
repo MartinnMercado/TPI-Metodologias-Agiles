@@ -59,4 +59,11 @@ describe('Ahorcado - US-11 Finalizar partida', () => {
     ['G', 'A', 'T', 'O'].forEach((letra) => juego.adivinar(letra));
     expect(juego.estado()).toBe('GANADO');
   });
+
+  it('no se pueden ingresar letras una vez que el juego fue ganado', () => {
+    const juego = new Ahorcado('GATO');
+    ['G', 'A', 'T', 'O'].forEach((letra) => juego.adivinar(letra));
+    juego.adivinar('Z');
+    expect(juego.vidas()).toBe(6);
+  });
 });
