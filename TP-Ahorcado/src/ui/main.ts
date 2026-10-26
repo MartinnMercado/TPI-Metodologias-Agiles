@@ -28,11 +28,12 @@ if (btnIniciar) {
     if (elemEstado) {
       elemEstado.textContent = "";
     }
+    if (inputLetra) {
+      inputLetra.disabled = false;
+      inputLetra.focus();
+    }
     if (pantallaJuego) {
       pantallaJuego.style.display = "block";
-    }
-    if (inputLetra) {
-      inputLetra.focus();
     }
   });
 }
@@ -49,12 +50,14 @@ if (inputLetra) {
         if (elemVidas) {
           elemVidas.textContent = String(juego.vidas());
         }
-        if (elemEstado && juego.estado() !== "JUGANDO") {
-          elemEstado.textContent = juego.estado() === "PERDIDO" ? "PERDISTE" : "GANASTE";
+        if (juego.estado() !== "JUGANDO") {
+          if (elemEstado) {
+            elemEstado.textContent = juego.estado() === "PERDIDO" ? "PERDISTE" : "GANASTE";
+          }
+          inputLetra.disabled = true;
         }
       }
       inputLetra.value = "";
     }
   });
 }
-
