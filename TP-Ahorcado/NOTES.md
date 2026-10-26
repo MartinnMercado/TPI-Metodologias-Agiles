@@ -56,6 +56,12 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 | CA-2: fallar letra descuenta una vida | El jugador falla una letra (@CA-2) | `adivinar('E')` descuenta 1 vida en `vidas()` | Verde ✅ |
 | CA-3: letra repetida no descuenta vidas adicionales | El jugador no pierde vidas al repetir una letra (@CA-3) | `adivinar('E')` repetida mantiene 5 vidas | Verde ✅ |
 
+### US-11 Finalizar partida (Saber si gané o perdí)
+| Criterio | Escenario (AT) | Unit Tests del objeto Ahorcado | Estado |
+|---|---|---|---|
+| CA-1: perder partida al agotar vidas | El jugador pierde la partida al agotar las vidas (@CA-1) | `estado()` retorna 'PERDIDO' al llegar a 0 vidas | Verde ✅ |
+| CA-2: ganar partida al adivinar palabra | El jugador gana la partida al completar la palabra (@CA-2) | `estado()` retorna 'GANADO' al completar letras | Pendiente ⏳ |
+
 ---
 
 ## Estado de las historias tomadas
@@ -64,6 +70,7 @@ Las historias de **Release 2** (como `US-02 Ver instrucciones` o `US-04 Categor�
 |---|---|---|---|
 | US-01 Iniciar partida nueva | MVP (R1) | AT: ver botón, iniciar con GATO y 6 vidas | **Terminada** ✅ |
 | US-07 / US-08 Ingresar letra (aciertos y errores) | MVP (R1) | AT: acertar letra ('A') / fallar letra ('E') / letra repetida | **Terminada** ✅ |
+| US-11 Finalizar partida | MVP (R1) | AT: perder al agotar vidas / ganar al completar palabra | **En progreso** 🟡 |
 
 ---
 
