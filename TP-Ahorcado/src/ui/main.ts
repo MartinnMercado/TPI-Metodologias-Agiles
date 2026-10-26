@@ -11,6 +11,7 @@ const elemPalabra = document.getElementById("word") as HTMLElement;
 const elemVidas = document.getElementById("lives") as HTMLElement;
 const elemEstado = document.getElementById("game-status") as HTMLElement;
 const inputLetra = document.getElementById("input-letra") as HTMLInputElement;
+const elemPuntaje = document.getElementById("score") as HTMLElement;
 
 let juego: Ahorcado;
 
@@ -35,6 +36,9 @@ if (btnIniciar) {
     if (pantallaJuego) {
       pantallaJuego.style.display = "block";
     }
+    if (elemPuntaje) {
+      elemPuntaje.textContent = "";
+    }
   });
 }
 
@@ -52,7 +56,11 @@ if (inputLetra) {
         }
         if (juego.estado() !== "JUGANDO") {
           if (elemEstado) {
-            elemEstado.textContent = juego.estado() === "PERDIDO" ? "PERDISTE" : "GANASTE";
+            elemEstado.textContent =
+              juego.estado() === "PERDIDO" ? "PERDISTE" : "GANASTE";
+          }
+          if (elemPuntaje) {
+            elemPuntaje.textContent = `Puntaje: ${juego.puntaje()}`;
           }
           inputLetra.disabled = true;
         }
