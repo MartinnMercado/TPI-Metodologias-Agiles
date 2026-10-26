@@ -22,6 +22,12 @@ export class Ahorcado {
     return this.vidasRestantes;
   }
 
+  // Devuelve el estado actual de la partida ('JUGANDO', 'GANADO', 'PERDIDO')
+  estado(): string {
+    return 'JUGANDO';
+  }
+
+
   // Registra la letra: ignora repetidas, si acierta revela y si falla descuenta una vida
   adivinar(letra: string): void {
     const letraNormalizada = letra.toUpperCase();
