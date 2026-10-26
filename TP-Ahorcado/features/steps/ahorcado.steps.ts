@@ -57,3 +57,8 @@ Then("veo el mensaje de estado {string}", async ({ page }, mensaje: string) => {
 Then("el campo para ingresar letras esta deshabilitado", async ({ page }) => {
   await expect(page.getByRole("textbox")).toBeDisabled();
 });
+
+// Verifica el puntaje obtenido
+Then("veo el puntaje {string}", async ({ page }, puntaje: string) => {
+  await expect(page.getByTestId("score")).toHaveText(puntaje);
+});
