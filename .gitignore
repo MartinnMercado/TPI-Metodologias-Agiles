@@ -31,3 +31,5 @@ Thumbs.db
 # Variables de entorno locales (pueden contener datos sensibles)
 .env
 .env.local
+
+pnpm-lock.yaml
