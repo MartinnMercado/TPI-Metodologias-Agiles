@@ -48,10 +48,15 @@ describe('Ahorcado - US-11 Finalizar partida', () => {
   });
 
   it('el juego pasa a estado PERDIDO al agotar las 6 vidas', () => {
-
     const juego = new Ahorcado('GATO');
     ['B', 'C', 'D', 'E', 'F', 'H'].forEach((letra) => juego.adivinar(letra));
     expect(juego.vidas()).toBe(0);
     expect(juego.estado()).toBe('PERDIDO');
   });
-});
+
+  it('el juego pasa a estado GANADO al adivinar todas las letras', () => {
+    const juego = new Ahorcado('GATO');
+    ['G', 'A', 'T', 'O'].forEach((letra) => juego.adivinar(letra));
+    expect(juego.estado()).toBe('GANADO');
+  });
+});
