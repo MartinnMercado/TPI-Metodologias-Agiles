@@ -101,4 +101,9 @@ describe("Ahorcado - US-03 Seleccionar dificultad", () => {
     const juego = new Ahorcado("GATO", "facil");
     expect(juego.vidas()).toBe(8);
   });
+
+  it("en modo dificil el juego arranca con 3 vidas", () => {
+    const juego = new Ahorcado("GATO", "dificil");
+    expect(juego.vidas()).toBe(3);
+  });
 });
