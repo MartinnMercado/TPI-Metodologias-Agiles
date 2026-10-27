@@ -176,6 +176,9 @@ if (inputLetra) {
           }
           if (juego.estado() === "PERDIDO") {
             actualizarAhorcado(vidasMaximas); // asegura ahorcado completo
+            if (elemPalabra) {
+              elemPalabra.textContent = juego.palabraReal().split("").join(" ");
+            }
             if (elemPalabraRevelada) {
               elemPalabraRevelada.textContent = juego.palabraReal();
             }

@@ -74,6 +74,8 @@ Then("veo el puntaje {string}", async ({ page }, puntaje: string) => {
 // Verifica que se muestra la palabra real al perder
 Then("veo la palabra revelada {string}", async ({ page }, palabra: string) => {
   await expect(page.getByTestId("palabra-revelada")).toHaveText(palabra);
+  const palabraSeparada = palabra.split("").join(" ");
+  await expect(page.getByTestId("word")).toHaveText(palabraSeparada);
 });
 
 // Verifica que el boton de reiniciar es visible
