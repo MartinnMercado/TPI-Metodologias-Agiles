@@ -301,13 +301,44 @@ body {
 }
 
 .corazon {
-  display: inline-block;
-  font-size: 1.6rem;
-  color: #ff5e6c;
-  filter: drop-shadow(0 0 5px rgba(255, 94, 108, 0.7));
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  animation: corazon-aparecer 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
+}
+
+.corazon-svg {
+  display: block;
+  overflow: visible;
+  transition: transform 0.25s ease;
+}
+
+.corazon--lleno .corazon-svg path {
+  fill: #ff5e6c;
+  stroke: #ff5e6c;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 5px rgba(255, 94, 108, 0.7));
+  animation: corazon-aparecer 0.3s ease;
+}
+
+.corazon--vacio .corazon-svg path {
+  fill: none;
+  stroke: #ff5e6c;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.45;
+  filter: drop-shadow(0 0 3px rgba(255, 94, 108, 0.3));
+}
+
+.corazon--vacio {
+  animation: corazon-perder 0.35s ease;
+}
+
+@keyframes corazon-perder {
+  0% { transform: scale(1.2); }
+  50% { transform: scale(0.85); }
+  100% { transform: scale(1); }
 }
 
 @keyframes corazon-aparecer {

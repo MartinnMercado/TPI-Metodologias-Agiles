@@ -40,19 +40,27 @@ const selectDificultad = document.getElementById("select-dificultad") as HTMLSel
 let juego: Ahorcado;
 let vidasMaximas: number;
 
-// ─── Actualiza los corazones según vidas restantes (van desapareciendo) ─────
+const SVG_CORAZON_PATH =
+  "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+
+// ─── Actualiza los corazones: llenos los restantes, solo borde los perdidos ──
 function actualizarCorazones(vidasActuales: number): void {
   // Actualiza el span numérico (para los tests de aceptación)
   if (elemVidasNum) elemVidasNum.textContent = String(vidasActuales);
 
-  // Actualiza los corazones visuales (solo quedan los vivos)
+  // Actualiza los corazones visuales
   if (!elemCorazones) return;
   elemCorazones.innerHTML = "";
-  for (let i = 0; i < vidasActuales; i++) {
+  for (let i = 0; i < vidasMaximas; i++) {
+    const lleno = i < vidasActuales;
     const span = document.createElement("span");
-    span.className = "corazon";
-    span.textContent = "\u2665";
+    span.className = "corazon " + (lleno ? "corazon--lleno" : "corazon--vacio");
     span.setAttribute("aria-hidden", "true");
+    span.innerHTML = `
+      <svg viewBox="0 0 24 24" width="22" height="22" class="corazon-svg">
+        <path d="${SVG_CORAZON_PATH}" />
+      </svg>
+    `;
     elemCorazones.appendChild(span);
   }
 }
