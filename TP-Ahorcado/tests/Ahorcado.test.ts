@@ -88,3 +88,10 @@ describe("Ahorcado - US-14 Consultar puntaje", () => {
     expect(juego.puntaje()).toBe(0);
   });
 });
+
+describe("Ahorcado - US-12 Mostrar palabra al perder", () => {
+  it("palabraReal devuelve la palabra secreta", () => {
+    const juego = new Ahorcado("GATO");
+    expect(juego.palabraReal()).toBe("GATO");
+  });
+});
