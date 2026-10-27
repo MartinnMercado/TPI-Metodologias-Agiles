@@ -3,10 +3,10 @@ export class Ahorcado {
   private letrasAdivinadas: Set<string>;
   private vidasRestantes: number;
 
-  constructor(palabra: string) {
+  constructor(palabra: string, dificultad: string = "normal") {
     this.palabra = palabra.toUpperCase();
     this.letrasAdivinadas = new Set();
-    this.vidasRestantes = 6;
+    this.vidasRestantes = dificultad === "facil" ? 8 : 6;
   }
 
   // Muestra las letras acertadas y guiones en las que faltan
