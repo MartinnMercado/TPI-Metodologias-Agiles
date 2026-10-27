@@ -28,8 +28,25 @@ const elemPuntaje = document.getElementById("score") as HTMLElement;
 const elemPalabraRevelada = document.getElementById(
   "palabra-revelada",
 ) as HTMLElement;
+const selectDificultad = document.getElementById(
+  "select-dificultad",
+) as HTMLSelectElement;
+const labelDificultad = document.querySelector(
+  "label[for='select-dificultad']",
+) as HTMLElement;
 
 let juego: Ahorcado;
+
+function mostrarPantallaDificultad(): void {
+  if (selectDificultad) selectDificultad.style.display = "inline";
+  if (labelDificultad) labelDificultad.style.display = "inline";
+}
+
+function ocultarPantallaDificultad(): void {
+  if (selectDificultad) selectDificultad.style.display = "none";
+  if (labelDificultad) labelDificultad.style.display = "none";
+  if (btnIniciar) btnIniciar.style.display = "none";
+}
 
 function iniciarJuego(): void {
   const palabra = obtenerPalabra();
@@ -41,7 +58,7 @@ function iniciarJuego(): void {
   if (elemEstado) elemEstado.textContent = "";
   if (elemPuntaje) elemPuntaje.textContent = "";
   if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
-  if (btnIniciar) btnIniciar.style.display = "none";
+  ocultarPantallaDificultad();
   if (btnReiniciar) btnReiniciar.style.display = "none";
   if (inputLetra) {
     inputLetra.disabled = false;
@@ -78,6 +95,7 @@ if (inputLetra) {
           if (juego.estado() === "PERDIDO" && elemPalabraRevelada) {
             elemPalabraRevelada.textContent = juego.palabraReal();
           }
+          mostrarPantallaDificultad();
           if (btnReiniciar) btnReiniciar.style.display = "inline";
           inputLetra.disabled = true;
         }
