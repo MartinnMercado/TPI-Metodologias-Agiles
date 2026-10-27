@@ -4,32 +4,117 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Ahorcado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/ui/style.css" />
   </head>
   <body>
     <div id="app">
-      <h1>El Ahorcado</h1>
-      <label for="select-dificultad">Dificultad:</label>
-      <select id="select-dificultad">
-        <option value="facil">Fácil (8 vidas)</option>
-        <option value="normal" selected>Normal (6 vidas)</option>
-        <option value="dificil">Difícil (3 vidas)</option>
-      </select>
-      <button id="btn-iniciar">Iniciar partida</button>
-      <div id="pantalla-juego" style="display: none">
-        <p>Palabra: <span data-testid="word" id="word"></span></p>
-        <p>Vidas: <span data-testid="lives" id="lives"></span></p>
-        <p id="game-status" data-testid="game-status"></p>
-        <p id="score" data-testid="score"></p>
-        <p id="palabra-revelada" data-testid="palabra-revelada"></p>
-        <input
-          type="text"
-          id="input-letra"
-          aria-label="Ingresar letra"
-          maxlength="1"
-          placeholder="Letra"
-        />
-        <button id="btn-reiniciar" style="display: none">Reiniciar partida</button>
+
+      <!-- PANTALLA DE INICIO: menu principal -->
+      <div id="pantalla-inicio">
+        <h1 class="titulo-inicio">El Ahorcado</h1>
+        <div class="menu-inicio">
+          <label for="select-dificultad" class="chalk-label">Dificultad:</label>
+          <select id="select-dificultad" class="chalk-select">
+            <option value="facil">Fácil (8 vidas)</option>
+            <option value="normal" selected>Normal (6 vidas)</option>
+            <option value="dificil">Difícil (3 vidas)</option>
+          </select>
+          <button id="btn-iniciar" class="chalk-btn chalk-btn--primary">Iniciar partida</button>
+        </div>
       </div>
+
+      <!-- PANTALLA DE JUEGO: pizarra -->
+      <div id="pantalla-juego" style="display: none">
+        <div class="pizarra">
+          <!-- Clavos en las 4 esquinas del marco -->
+          <div class="clavo clavo--tl" aria-hidden="true"></div>
+          <div class="clavo clavo--tr" aria-hidden="true"></div>
+          <div class="clavo clavo--bl" aria-hidden="true"></div>
+          <div class="clavo clavo--br" aria-hidden="true"></div>
+
+          <!-- Fila superior: dificultad + corazones -->
+          <div class="pizarra-header">
+            <span id="dificultad-label" class="chalk-text chalk-text--small"></span>
+            <div class="corazones-area">
+              <span class="chalk-label chalk-text--small">Vidas:</span>
+              <div id="corazones" class="corazones" aria-label="Vidas restantes"></div>
+              <span id="lives" data-testid="lives" style="display:none" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <!-- Contenido principal: ahorcado + palabra + letras -->
+          <div class="pizarra-main">
+
+            <!-- SVG del ahorcado -->
+            <div class="ahorcado-zona">
+              <svg id="ahorcado-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg"
+                   class="ahorcado-svg" aria-label="Dibujo del ahorcado">
+                <defs>
+                  <filter id="chalk-filter" x="-10%" y="-10%" width="120%" height="120%">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
+                  </filter>
+                </defs>
+                <g filter="url(#chalk-filter)">
+                  <!-- Estructura del patibulo -->
+                  <line x1="20" y1="240" x2="180" y2="240" class="chalk-line" />
+                  <line x1="60" y1="240" x2="60" y2="20" class="chalk-line" />
+                  <line x1="60" y1="20" x2="130" y2="20" class="chalk-line" />
+                  <line x1="60" y1="55" x2="95" y2="20" class="chalk-line" />
+                  <line x1="130" y1="20" x2="130" y2="50" class="chalk-line" />
+                  <!-- Partes del cuerpo: se muestran con JS -->
+                  <circle id="cabeza" cx="130" cy="70" r="20" class="chalk-line chalk-parte" style="display:none" />
+                  <line id="cuerpo" x1="130" y1="90" x2="130" y2="160" class="chalk-line chalk-parte" style="display:none" />
+                  <line id="brazo-izq" x1="130" y1="110" x2="100" y2="140" class="chalk-line chalk-parte" style="display:none" />
+                  <line id="brazo-der" x1="130" y1="110" x2="160" y2="140" class="chalk-line chalk-parte" style="display:none" />
+                  <line id="pierna-izq" x1="130" y1="160" x2="100" y2="200" class="chalk-line chalk-parte" style="display:none" />
+                  <line id="pierna-der" x1="130" y1="160" x2="160" y2="200" class="chalk-line chalk-parte" style="display:none" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- Zona derecha: palabra + info -->
+            <div class="juego-zona">
+
+              <!-- Palabra enmascarada -->
+              <div id="word" data-testid="word" class="palabra-display chalk-text"></div>
+
+              <!-- Input letra -->
+              <div class="input-zona">
+                <input
+                  type="text"
+                  id="input-letra"
+                  aria-label="Ingresar letra"
+                  maxlength="1"
+                  placeholder="Letra..."
+                  class="chalk-input"
+                />
+              </div>
+
+              <!-- Estado del juego -->
+              <p id="game-status" data-testid="game-status" class="chalk-text chalk-text--estado"></p>
+              <p id="score" data-testid="score" class="chalk-text chalk-text--small"></p>
+              <p id="palabra-revelada" data-testid="palabra-revelada" class="chalk-text chalk-text--small chalk-text--revelada"></p>
+
+              <!-- Letras usadas -->
+              <div class="letras-usadas-zona">
+                <span class="chalk-label chalk-text--small">Letras usadas:</span>
+                <span id="letras-usadas" data-testid="letras-usadas" class="chalk-text chalk-text--small letras-usadas-lista"></span>
+              </div>
+
+              <!-- Boton reiniciar -->
+              <button id="btn-reiniciar" class="chalk-btn chalk-btn--secondary" style="display: none">
+                Reiniciar partida
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
     <script type="module" src="/src/ui/main.ts"></script>
   </body>

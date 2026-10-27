@@ -87,3 +87,11 @@ Then("veo el boton reiniciar", async ({ page }) => {
 When("hago clic en reiniciar", async ({ page }) => {
   await page.getByRole("button", { name: /reiniciar partida/i }).click();
 });
+
+// Verifica las letras usadas mostradas en la UI
+Then(
+  "veo las letras usadas {string}",
+  async ({ page }, letras: string) => {
+    await expect(page.getByTestId("letras-usadas")).toHaveText(letras);
+  },
+);

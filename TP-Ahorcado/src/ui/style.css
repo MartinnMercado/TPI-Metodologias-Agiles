@@ -1,0 +1,430 @@
+/* ===================================================
+   El Ahorcado - Estética Pizarra
+   =================================================== */
+
+/* --- Reset y base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Variables --- */
+:root {
+  --pared-bg: #5a4a3b;
+  --pizarra-bg: #2d4a2d;
+  --pizarra-dark: #1e331e;
+  --marco-color: #6b4226;
+  --marco-dark: #4a2e18;
+  --chalk: rgba(255, 255, 255, 0.90);
+  --chalk-dim: rgba(255, 255, 255, 0.60);
+  --chalk-faint: rgba(255, 255, 255, 0.30);
+  --font-chalk: 'Caveat', cursive;
+  --font-title: 'Special Elite', cursive;
+}
+
+/* --- Fondo de pared con textura de ladrillos (CSS puro) --- */
+html, body {
+  min-height: 100vh;
+  width: 100%;
+}
+
+body {
+  background-color: var(--pared-bg);
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 28px,
+      rgba(0,0,0,0.35) 28px,
+      rgba(0,0,0,0.35) 32px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 58px,
+      rgba(0,0,0,0.25) 58px,
+      rgba(0,0,0,0.25) 62px
+    );
+  background-size: 62px 32px;
+  font-family: var(--font-chalk);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px 48px;
+  min-height: 100vh;
+}
+
+/* --- Pantalla de inicio --- */
+#pantalla-inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  gap: 32px;
+}
+
+.titulo-inicio {
+  font-family: var(--font-title);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  color: var(--chalk);
+  text-shadow:
+    2px 2px 0 rgba(255,255,255,0.1),
+    0 0 30px rgba(255,255,255,0.2);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.menu-inicio {
+  background: var(--pizarra-bg);
+  border: 8px solid var(--marco-color);
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,0.4),
+    0 8px 32px rgba(0,0,0,0.6);
+  border-radius: 4px;
+  padding: 40px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  min-width: 320px;
+}
+
+/* --- Pizarra principal del juego --- */
+.pizarra {
+  width: min(900px, 96vw);
+  background: var(--pizarra-bg);
+  border: 10px solid var(--marco-color);
+  border-bottom-width: 14px;
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.45),
+    0 12px 48px rgba(0,0,0,0.7),
+    4px 4px 0 var(--marco-dark);
+  border-radius: 4px;
+  padding: 32px 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de textura de tiza sutil */
+.pizarra::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 22%;
+  right: 22%;
+  height: 8px;
+  background: linear-gradient(180deg, #5a351d 0%, #3a2010 100%);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* --- Clavos en las esquinas del marco de la pizarra --- */
+.clavo {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #d1d5db 20%, #4b5563 80%);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), inset 0 0 2px rgba(0,0,0,0.6);
+  z-index: 2;
+}
+
+.clavo--tl { top: -5px; left: -5px; }
+.clavo--tr { top: -5px; right: -5px; }
+.clavo--bl { bottom: -5px; left: -5px; }
+.clavo--br { bottom: -5px; right: -5px; }
+
+/* --- Header de la pizarra: dificultad + corazones --- */
+.pizarra-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--chalk-faint);
+  padding-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Contenido principal --- */
+.pizarra-main {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Zona del SVG del ahorcado --- */
+.ahorcado-zona {
+  flex: 0 0 200px;
+}
+
+.ahorcado-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Líneas del ahorcado en estilo tiza */
+.chalk-line {
+  stroke: var(--chalk);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.4));
+}
+
+.chalk-parte {
+  transition: opacity 0.4s ease;
+}
+
+/* --- Zona derecha: palabra, input, info --- */
+.juego-zona {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* --- Palabra display --- */
+.palabra-display {
+  font-family: var(--font-chalk);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 700;
+  color: var(--chalk);
+  letter-spacing: 0.25em;
+  word-break: break-all;
+  text-align: center;
+  line-height: 1.4;
+  min-height: 2em;
+  padding: 8px 16px;
+  border-bottom: 3px solid var(--chalk-dim);
+  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+/* --- Input de letra --- */
+.input-zona {
+  display: flex;
+  justify-content: center;
+}
+
+.chalk-input {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid var(--chalk-dim);
+  color: var(--chalk);
+  font-family: var(--font-chalk);
+  font-size: 1.8rem;
+  text-align: center;
+  width: 80px;
+  padding: 4px 8px;
+  outline: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+  caret-color: var(--chalk);
+}
+
+.chalk-input::placeholder {
+  color: var(--chalk-faint);
+  font-size: 1.2rem;
+}
+
+.chalk-input:focus {
+  border-bottom-color: var(--chalk);
+}
+
+.chalk-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Textos genéricos de tiza --- */
+.chalk-text {
+  font-family: var(--font-chalk);
+  color: var(--chalk);
+  text-shadow: 0 0 6px rgba(255,255,255,0.2);
+}
+
+.chalk-text--small {
+  font-size: 1.1rem;
+  color: var(--chalk-dim);
+}
+
+.chalk-text--estado {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.1em;
+  color: var(--chalk);
+  animation: aparecer 0.4s ease;
+}
+
+.chalk-text--victoria {
+  color: #a8e6cf !important;
+  text-shadow: 0 0 12px rgba(168, 230, 207, 0.8) !important;
+}
+
+.chalk-text--derrota {
+  color: #ff8b94 !important;
+  text-shadow: 0 0 12px rgba(255, 139, 148, 0.8) !important;
+}
+
+.chalk-text--revelada {
+  text-align: center;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* --- Corazones --- */
+.corazones-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corazones {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-height: 2rem;
+}
+
+.corazon {
+  display: inline-block;
+  font-size: 1.6rem;
+  color: #ff5e6c;
+  filter: drop-shadow(0 0 5px rgba(255, 94, 108, 0.7));
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  animation: corazon-aparecer 0.3s ease;
+  user-select: none;
+}
+
+@keyframes corazon-aparecer {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+/* --- Letras usadas --- */
+.letras-usadas-zona {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.letras-usadas-lista {
+  font-size: 1.1rem;
+  color: var(--chalk-dim);
+  letter-spacing: 0.08em;
+  font-family: var(--font-chalk);
+  min-height: 1.4em;
+  word-break: break-all;
+}
+
+/* --- Etiqueta label --- */
+.chalk-label {
+  font-family: var(--font-chalk);
+  color: var(--chalk-dim);
+  font-size: 1.2rem;
+}
+
+/* --- Select de dificultad --- */
+.chalk-select {
+  background: transparent;
+  border: 2px solid var(--chalk-dim);
+  color: var(--chalk);
+  font-family: var(--font-chalk);
+  font-size: 1.3rem;
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  transition: border-color 0.2s;
+}
+
+.chalk-select:focus {
+  border-color: var(--chalk);
+}
+
+.chalk-select option {
+  background: var(--pizarra-dark);
+  color: var(--chalk);
+}
+
+/* --- Botones de tiza --- */
+.chalk-btn {
+  font-family: var(--font-chalk);
+  font-size: 1.4rem;
+  font-weight: 600;
+  border: 3px solid var(--chalk-dim);
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 28px;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.chalk-btn--primary {
+  color: var(--chalk);
+}
+
+.chalk-btn--primary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--chalk);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.chalk-btn--secondary {
+  color: var(--chalk-dim);
+  border-color: var(--chalk-faint);
+  font-size: 1.2rem;
+  align-self: center;
+}
+
+.chalk-btn--secondary:hover {
+  color: var(--chalk);
+  border-color: var(--chalk-dim);
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  body {
+    padding: 16px 8px 32px;
+  }
+
+  .pizarra {
+    padding: 20px 16px 28px;
+  }
+
+  .pizarra-main {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ahorcado-zona {
+    flex: none;
+    width: 160px;
+    align-self: center;
+  }
+
+  .menu-inicio {
+    padding: 32px 28px;
+    min-width: 0;
+    width: 90vw;
+  }
+}
