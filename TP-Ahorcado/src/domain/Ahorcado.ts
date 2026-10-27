@@ -17,6 +17,11 @@ export class Ahorcado {
       .join(" ");
   }
 
+  // Devuelve la palabra secreta completa
+  palabraReal(): string {
+    return this.palabra;
+  }
+
   // Devuelve la cantidad de vidas disponibles
   vidas(): number {
     return this.vidasRestantes;
