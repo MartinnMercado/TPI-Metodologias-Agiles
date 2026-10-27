@@ -1,3 +1,9 @@
+const VIDAS_POR_DIFICULTAD: Record<string, number> = {
+  facil: 8,
+  normal: 6,
+  dificil: 3,
+};
+
 export class Ahorcado {
   private palabra: string;
   private letrasAdivinadas: Set<string>;
@@ -6,7 +12,7 @@ export class Ahorcado {
   constructor(palabra: string, dificultad: string = "normal") {
     this.palabra = palabra.toUpperCase();
     this.letrasAdivinadas = new Set();
-    this.vidasRestantes = dificultad === "facil" ? 8 : 6;
+    this.vidasRestantes = VIDAS_POR_DIFICULTAD[dificultad] ?? 6;
   }
 
   // Muestra las letras acertadas y guiones en las que faltan
