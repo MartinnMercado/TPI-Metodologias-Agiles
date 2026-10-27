@@ -77,7 +77,7 @@ describe("Ahorcado - US-14 Consultar puntaje", () => {
 
   it("al ganar con 4 vidas el puntaje es 400", () => {
     const juego = new Ahorcado("GATO");
-    ["B", "C"].forEach((letra) => juego.adivinar(letra)); // 2 errores → 4 vidas
+    ["B", "C"].forEach((letra) => juego.adivinar(letra));
     ["G", "A", "T", "O"].forEach((letra) => juego.adivinar(letra));
     expect(juego.puntaje()).toBe(400);
   });
@@ -93,5 +93,12 @@ describe("Ahorcado - US-12 Mostrar palabra al perder", () => {
   it("palabraReal devuelve la palabra secreta", () => {
     const juego = new Ahorcado("GATO");
     expect(juego.palabraReal()).toBe("GATO");
+  });
+});
+
+describe("Ahorcado - US-03 Seleccionar dificultad", () => {
+  it("en modo facil el juego arranca con 8 vidas", () => {
+    const juego = new Ahorcado("GATO", "facil");
+    expect(juego.vidas()).toBe(8);
   });
 });
