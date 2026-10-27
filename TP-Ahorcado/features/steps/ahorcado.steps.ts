@@ -62,3 +62,8 @@ Then("el campo para ingresar letras esta deshabilitado", async ({ page }) => {
 Then("veo el puntaje {string}", async ({ page }, puntaje: string) => {
   await expect(page.getByTestId("score")).toHaveText(puntaje);
 });
+
+// Verifica que se muestra la palabra real al perder
+Then("veo la palabra revelada {string}", async ({ page }, palabra: string) => {
+  await expect(page.getByTestId("palabra-revelada")).toHaveText(palabra);
+});

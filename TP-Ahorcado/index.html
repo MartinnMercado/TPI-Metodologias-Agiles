@@ -1,28 +1,26 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>El Ahorcado</title>
-  </head>
-  <body>
-    <div id="app">
-      <h1>El Ahorcado</h1>
-      <button id="btn-iniciar">Iniciar partida</button>
-      <div id="pantalla-juego" style="display: none">
-        <p>Palabra: <span data-testid="word" id="word"></span></p>
-        <p>Vidas: <span data-testid="lives" id="lives"></span></p>
-        <p id="game-status" data-testid="game-status"></p>
-        <p id="score" data-testid="score"></p>
-        <input
-          type="text"
-          id="input-letra"
-          aria-label="Ingresar letra"
-          maxlength="1"
-          placeholder="Letra"
-        />
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Ahorcado</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>El Ahorcado</h1>
+    <button id="btn-iniciar">Iniciar partida</button>
+    <div id="pantalla-juego" style="display: none">
+      <p>Palabra: <span data-testid="word" id="word"></span></p>
+      <p>Vidas: <span data-testid="lives" id="lives"></span></p>
+      <p id="game-status" data-testid="game-status"></p>
+      <p id="score" data-testid="score"></p>
+      <p id="palabra-revelada" data-testid="palabra-revelada"></p>
+      <input type="text" id="input-letra" aria-label="Ingresar letra" maxlength="1" placeholder="Letra" />
     </div>
-    <script type="module" src="/src/ui/main.ts"></script>
-  </body>
+  </div>
+  <script type="module" src="/src/ui/main.ts"></script>
+</body>
+
 </html>

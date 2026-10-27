@@ -12,6 +12,7 @@ const elemVidas = document.getElementById("lives") as HTMLElement;
 const elemEstado = document.getElementById("game-status") as HTMLElement;
 const inputLetra = document.getElementById("input-letra") as HTMLInputElement;
 const elemPuntaje = document.getElementById("score") as HTMLElement;
+const elemPalabraRevelada = document.getElementById("palabra-revelada") as HTMLElement;
 
 let juego: Ahorcado;
 
@@ -20,25 +21,16 @@ if (btnIniciar) {
     const palabra = obtenerPalabra();
     juego = new Ahorcado(palabra);
 
-    if (elemPalabra) {
-      elemPalabra.textContent = juego.palabraEnmascarada();
-    }
-    if (elemVidas) {
-      elemVidas.textContent = String(juego.vidas());
-    }
-    if (elemEstado) {
-      elemEstado.textContent = "";
-    }
+    if (elemPalabra) elemPalabra.textContent = juego.palabraEnmascarada();
+    if (elemVidas) elemVidas.textContent = String(juego.vidas());
+    if (elemEstado) elemEstado.textContent = "";
+    if (elemPuntaje) elemPuntaje.textContent = "";
+    if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
     if (inputLetra) {
       inputLetra.disabled = false;
       inputLetra.focus();
     }
-    if (pantallaJuego) {
-      pantallaJuego.style.display = "block";
-    }
-    if (elemPuntaje) {
-      elemPuntaje.textContent = "";
-    }
+    if (pantallaJuego) pantallaJuego.style.display = "block";
   });
 }
 
@@ -48,12 +40,8 @@ if (inputLetra) {
     if (event.key === "Enter" && inputLetra.value.trim() !== "") {
       if (juego) {
         juego.adivinar(inputLetra.value);
-        if (elemPalabra) {
-          elemPalabra.textContent = juego.palabraEnmascarada();
-        }
-        if (elemVidas) {
-          elemVidas.textContent = String(juego.vidas());
-        }
+        if (elemPalabra) elemPalabra.textContent = juego.palabraEnmascarada();
+        if (elemVidas) elemVidas.textContent = String(juego.vidas());
         if (juego.estado() !== "JUGANDO") {
           if (elemEstado) {
             elemEstado.textContent =
@@ -61,6 +49,9 @@ if (inputLetra) {
           }
           if (elemPuntaje) {
             elemPuntaje.textContent = `Puntaje: ${juego.puntaje()}`;
+          }
+          if (juego.estado() === "PERDIDO" && elemPalabraRevelada) {
+            elemPalabraRevelada.textContent = juego.palabraReal();
           }
           inputLetra.disabled = true;
         }
