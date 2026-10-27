@@ -13,5 +13,6 @@ Feature: Reiniciar partida
     And el jugador adivina la letra "H"
     Then veo el boton reiniciar
     When hago clic en reiniciar
+    And hago clic en iniciar partida
     Then veo la palabra oculta "_ _ _ _"
     And veo 6 vidas

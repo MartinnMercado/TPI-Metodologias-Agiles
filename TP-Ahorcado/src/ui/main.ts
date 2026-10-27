@@ -37,12 +37,13 @@ const labelDificultad = document.querySelector(
 
 let juego: Ahorcado;
 
-function mostrarPantallaDificultad(): void {
+function mostrarMenuInicial(): void {
   if (selectDificultad) selectDificultad.style.display = "inline";
   if (labelDificultad) labelDificultad.style.display = "inline";
+  if (btnIniciar) btnIniciar.style.display = "inline";
 }
 
-function ocultarPantallaDificultad(): void {
+function ocultarMenuInicial(): void {
   if (selectDificultad) selectDificultad.style.display = "none";
   if (labelDificultad) labelDificultad.style.display = "none";
   if (btnIniciar) btnIniciar.style.display = "none";
@@ -58,7 +59,7 @@ function iniciarJuego(): void {
   if (elemEstado) elemEstado.textContent = "";
   if (elemPuntaje) elemPuntaje.textContent = "";
   if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
-  ocultarPantallaDificultad();
+  ocultarMenuInicial();
   if (btnReiniciar) btnReiniciar.style.display = "none";
   if (inputLetra) {
     inputLetra.disabled = false;
@@ -68,12 +69,18 @@ function iniciarJuego(): void {
   if (pantallaJuego) pantallaJuego.style.display = "block";
 }
 
+function volverAlMenuInicial(): void {
+  if (pantallaJuego) pantallaJuego.style.display = "none";
+  if (btnReiniciar) btnReiniciar.style.display = "none";
+  mostrarMenuInicial();
+}
+
 if (btnIniciar) {
   btnIniciar.addEventListener("click", iniciarJuego);
 }
 
 if (btnReiniciar) {
-  btnReiniciar.addEventListener("click", iniciarJuego);
+  btnReiniciar.addEventListener("click", volverAlMenuInicial);
 }
 
 // Al presionar Enter en la caja de texto, se envía la letra a la lógica
@@ -95,7 +102,6 @@ if (inputLetra) {
           if (juego.estado() === "PERDIDO" && elemPalabraRevelada) {
             elemPalabraRevelada.textContent = juego.palabraReal();
           }
-          mostrarPantallaDificultad();
           if (btnReiniciar) btnReiniciar.style.display = "inline";
           inputLetra.disabled = true;
         }
