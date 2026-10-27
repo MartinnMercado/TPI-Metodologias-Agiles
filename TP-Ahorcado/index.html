@@ -8,6 +8,12 @@
   <body>
     <div id="app">
       <h1>El Ahorcado</h1>
+      <label for="select-dificultad">Dificultad:</label>
+      <select id="select-dificultad">
+        <option value="facil">Fácil (8 vidas)</option>
+        <option value="normal" selected>Normal (6 vidas)</option>
+        <option value="dificil">Difícil (3 vidas)</option>
+      </select>
       <button id="btn-iniciar">Iniciar partida</button>
       <div id="pantalla-juego" style="display: none">
         <p>Palabra: <span data-testid="word" id="word"></span></p>

@@ -5,21 +5,36 @@ function obtenerPalabra(): string {
   return params.get("word") || "GATO";
 }
 
+function obtenerDificultad(): string {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("dificultad") ||
+    (document.getElementById("select-dificultad") as HTMLSelectElement)
+      ?.value ||
+    "normal"
+  );
+}
+
 const btnIniciar = document.getElementById("btn-iniciar") as HTMLButtonElement;
-const btnReiniciar = document.getElementById("btn-reiniciar") as HTMLButtonElement;
+const btnReiniciar = document.getElementById(
+  "btn-reiniciar",
+) as HTMLButtonElement;
 const pantallaJuego = document.getElementById("pantalla-juego") as HTMLElement;
 const elemPalabra = document.getElementById("word") as HTMLElement;
 const elemVidas = document.getElementById("lives") as HTMLElement;
 const elemEstado = document.getElementById("game-status") as HTMLElement;
 const inputLetra = document.getElementById("input-letra") as HTMLInputElement;
 const elemPuntaje = document.getElementById("score") as HTMLElement;
-const elemPalabraRevelada = document.getElementById("palabra-revelada") as HTMLElement;
+const elemPalabraRevelada = document.getElementById(
+  "palabra-revelada",
+) as HTMLElement;
 
 let juego: Ahorcado;
 
 function iniciarJuego(): void {
   const palabra = obtenerPalabra();
-  juego = new Ahorcado(palabra);
+  const dificultad = obtenerDificultad();
+  juego = new Ahorcado(palabra, dificultad);
 
   if (elemPalabra) elemPalabra.textContent = juego.palabraEnmascarada();
   if (elemVidas) elemVidas.textContent = String(juego.vidas());

@@ -16,6 +16,14 @@ Given(
   },
 );
 
+// Abre la app inyectando palabra y dificultad por URL (seam de testing)
+Given(
+  "que abro la aplicacion con la palabra {string} y dificultad {string}",
+  async ({ page }, palabra: string, dificultad: string) => {
+    await page.goto(`/?word=${palabra}&dificultad=${dificultad}`);
+  },
+);
+
 // Verifica que existe el boton para iniciar
 Then("veo un boton para iniciar la partida", async ({ page }) => {
   await expect(
