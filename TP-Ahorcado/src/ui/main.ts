@@ -6,6 +6,7 @@ function obtenerPalabra(): string {
 }
 
 const btnIniciar = document.getElementById("btn-iniciar") as HTMLButtonElement;
+const btnReiniciar = document.getElementById("btn-reiniciar") as HTMLButtonElement;
 const pantallaJuego = document.getElementById("pantalla-juego") as HTMLElement;
 const elemPalabra = document.getElementById("word") as HTMLElement;
 const elemVidas = document.getElementById("lives") as HTMLElement;
@@ -16,22 +17,30 @@ const elemPalabraRevelada = document.getElementById("palabra-revelada") as HTMLE
 
 let juego: Ahorcado;
 
-if (btnIniciar) {
-  btnIniciar.addEventListener("click", () => {
-    const palabra = obtenerPalabra();
-    juego = new Ahorcado(palabra);
+function iniciarJuego(): void {
+  const palabra = obtenerPalabra();
+  juego = new Ahorcado(palabra);
 
-    if (elemPalabra) elemPalabra.textContent = juego.palabraEnmascarada();
-    if (elemVidas) elemVidas.textContent = String(juego.vidas());
-    if (elemEstado) elemEstado.textContent = "";
-    if (elemPuntaje) elemPuntaje.textContent = "";
-    if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
-    if (inputLetra) {
-      inputLetra.disabled = false;
-      inputLetra.focus();
-    }
-    if (pantallaJuego) pantallaJuego.style.display = "block";
-  });
+  if (elemPalabra) elemPalabra.textContent = juego.palabraEnmascarada();
+  if (elemVidas) elemVidas.textContent = String(juego.vidas());
+  if (elemEstado) elemEstado.textContent = "";
+  if (elemPuntaje) elemPuntaje.textContent = "";
+  if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
+  if (btnReiniciar) btnReiniciar.style.display = "none";
+  if (inputLetra) {
+    inputLetra.disabled = false;
+    inputLetra.value = "";
+    inputLetra.focus();
+  }
+  if (pantallaJuego) pantallaJuego.style.display = "block";
+}
+
+if (btnIniciar) {
+  btnIniciar.addEventListener("click", iniciarJuego);
+}
+
+if (btnReiniciar) {
+  btnReiniciar.addEventListener("click", iniciarJuego);
 }
 
 // Al presionar Enter en la caja de texto, se envía la letra a la lógica
@@ -53,6 +62,7 @@ if (inputLetra) {
           if (juego.estado() === "PERDIDO" && elemPalabraRevelada) {
             elemPalabraRevelada.textContent = juego.palabraReal();
           }
+          if (btnReiniciar) btnReiniciar.style.display = "inline";
           inputLetra.disabled = true;
         }
       }

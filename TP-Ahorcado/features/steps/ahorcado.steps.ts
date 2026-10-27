@@ -43,7 +43,7 @@ Then("veo la palabra oculta {string}", async ({ page }, esperada: string) => {
   await expect(page.getByTestId("word")).toHaveText(esperada);
 });
 
-// Verifica la cantidad de vidas disponibles al iniciar
+// Verifica la cantidad de vidas disponibles
 Then("veo {int} vidas", async ({ page }, vidas: number) => {
   await expect(page.getByTestId("lives")).toHaveText(String(vidas));
 });
@@ -66,4 +66,16 @@ Then("veo el puntaje {string}", async ({ page }, puntaje: string) => {
 // Verifica que se muestra la palabra real al perder
 Then("veo la palabra revelada {string}", async ({ page }, palabra: string) => {
   await expect(page.getByTestId("palabra-revelada")).toHaveText(palabra);
+});
+
+// Verifica que el boton de reiniciar es visible
+Then("veo el boton reiniciar", async ({ page }) => {
+  await expect(
+    page.getByRole("button", { name: /reiniciar partida/i }),
+  ).toBeVisible();
+});
+
+// El jugador hace clic en reiniciar
+When("hago clic en reiniciar", async ({ page }) => {
+  await page.getByRole("button", { name: /reiniciar partida/i }).click();
 });
