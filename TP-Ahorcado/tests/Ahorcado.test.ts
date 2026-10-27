@@ -107,3 +107,24 @@ describe("Ahorcado - US-03 Seleccionar dificultad", () => {
     expect(juego.vidas()).toBe(3);
   });
 });
+
+describe("Ahorcado - US-09 Ver letras ya usadas", () => {
+  it("letrasUsadas devuelve un arreglo vacío al inicio", () => {
+    const juego = new Ahorcado("GATO");
+    expect(juego.letrasUsadas()).toEqual([]);
+  });
+
+  it("letrasUsadas incluye letras erradas ingresadas", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("B");
+    juego.adivinar("C");
+    expect(juego.letrasUsadas()).toEqual(["B", "C"]);
+  });
+
+  it("letrasUsadas incluye letras acertadas ingresadas", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("G");
+    juego.adivinar("B");
+    expect(juego.letrasUsadas()).toEqual(["G", "B"]);
+  });
+});
