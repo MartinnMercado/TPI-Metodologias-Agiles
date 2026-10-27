@@ -41,6 +41,7 @@ function iniciarJuego(): void {
   if (elemEstado) elemEstado.textContent = "";
   if (elemPuntaje) elemPuntaje.textContent = "";
   if (elemPalabraRevelada) elemPalabraRevelada.textContent = "";
+  if (btnIniciar) btnIniciar.style.display = "none";
   if (btnReiniciar) btnReiniciar.style.display = "none";
   if (inputLetra) {
     inputLetra.disabled = false;
