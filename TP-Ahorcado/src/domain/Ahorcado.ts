@@ -7,11 +7,13 @@ const VIDAS_POR_DIFICULTAD: Record<string, number> = {
 export class Ahorcado {
   private palabra: string;
   private letrasAdivinadas: Set<string>;
+  private letrasIngresadas: string[];
   private vidasRestantes: number;
 
   constructor(palabra: string, dificultad: string = "normal") {
     this.palabra = palabra.toUpperCase();
     this.letrasAdivinadas = new Set();
+    this.letrasIngresadas = [];
     this.vidasRestantes = VIDAS_POR_DIFICULTAD[dificultad] ?? 6;
   }
 
@@ -66,9 +68,15 @@ export class Ahorcado {
     }
 
     this.letrasAdivinadas.add(letraNormalizada);
+    this.letrasIngresadas.push(letraNormalizada);
 
     if (!this.palabra.includes(letraNormalizada)) {
       this.vidasRestantes--;
     }
+  }
+
+  // Devuelve la lista de letras ingresadas en orden de inserción
+  letrasUsadas(): string[] {
+    return [...this.letrasIngresadas];
   }
 }
