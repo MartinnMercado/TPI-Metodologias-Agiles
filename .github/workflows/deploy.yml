@@ -7,9 +7,8 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Vercel (after CI passes)
+    name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: []   # Se ejecuta solo en pushes a main; el CI ya validó la calidad
 
     defaults:
       run:
@@ -32,11 +31,11 @@ jobs:
       - name: Build de produccion
         run: npm run build
 
-      - name: Deploy a Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: TP-Ahorcado
-          vercel-args: "--prod"
+      - name: Instalar Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy a Vercel (produccion)
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
