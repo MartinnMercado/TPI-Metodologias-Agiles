@@ -9,12 +9,14 @@ export class Ahorcado {
   private letrasAdivinadas: Set<string>;
   private letrasIngresadas: string[];
   private vidasRestantes: number;
+  private vidasMaximas: number;
 
   constructor(palabra: string, dificultad: string = "normal") {
     this.palabra = palabra.toUpperCase();
     this.letrasAdivinadas = new Set();
     this.letrasIngresadas = [];
     this.vidasRestantes = VIDAS_POR_DIFICULTAD[dificultad] ?? 6;
+    this.vidasMaximas = this.vidasRestantes;
   }
 
   // Muestra las letras acertadas y guiones en las que faltan
@@ -46,10 +48,12 @@ export class Ahorcado {
     return "JUGANDO";
   }
 
-  // Calcula el puntaje: vidas restantes * 100 si gano, 0 si no
+  // Calcula el puntaje normalizado: juego perfecto = 600 pts en cualquier dificultad.
+  // Formula: (vidasRestantes / vidasMaximas) * 600, redondeado.
+  // Asi, facil y dificil se comparan de forma justa por el porcentaje de vidas conservadas.
   puntaje(): number {
     if (this.estado() === "GANADO") {
-      return this.vidasRestantes * 100;
+      return Math.round((this.vidasRestantes / this.vidasMaximas) * 600);
     }
     return 0;
   }
